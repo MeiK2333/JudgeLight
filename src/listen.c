@@ -18,7 +18,7 @@ unsigned long long str2long(char *t)
     return ans;
 }
 
-void listen(int operin, int operout)
+void _listen(int operin, int operout)
 {
 #define READEND write(operout, "bilibili\0", 9)
     int n;

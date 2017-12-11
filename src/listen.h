@@ -4,6 +4,6 @@
 // 单次读取的最大长度
 #define READ_MAX 120
 
-void listen(int, int);
+void _listen(int, int);
 
 #endif

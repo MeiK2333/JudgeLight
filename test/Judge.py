@@ -40,7 +40,7 @@ class Result(object):
                 if self.memory_limit != -1 and self.memory_used > self.memory_limit:
                     self.reason_str = 'Memory Limit Exceeded'
                 else:
-                    self.reason_str = 'Memory Limit Exceeded or Runtime Error'
+                    self.reason_str = 'Runtime Error'
             elif self.reason == 'SIGALRM' or self.reason == 'SIGXCPU':
                 self.reason_str = 'Time Limit Exceeded'
             else:
@@ -152,6 +152,12 @@ class JudgeLight(object):
         self._send('as')
         self._send(str(value))
 
+    def set_stack(self, value):
+        ''' 设置stack '''
+        self._send('limit')
+        self._send('stack')
+        self._send(str(value))
+
     def fd_close(self, fd):
         ''' 关闭指定的文件描述符 '''
         self._send('fd')
@@ -168,6 +174,7 @@ class JudgeLight(object):
         assert type(value) == int
         self.set_data(value)
         self.set_as(value * 2)
+        self.set_stack(256 * 1024)
         self._memory_limit = value
 
     def run(self, cmd):

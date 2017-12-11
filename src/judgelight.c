@@ -25,7 +25,7 @@ static PyObject *init(PyObject *self, PyObject *args)
         close(operin[1]);
         close(operout[0]);
 
-        listen(operin[0], operout[1]);
+        _listen(operin[0], operout[1]);
         exit(0);
     }
     else

@@ -10,4 +10,7 @@ gcc -fPIC -shared judgelight.c limit.c listen.c run.c -o judgelight.so -I/usr/in
 >>> from judgelight import judgelight
 >>> judgelight()
 'Hello JudgeLight!'
+
+>>> from Judge import JudgeLight
+>>> judge = JudgeLight()
 ```

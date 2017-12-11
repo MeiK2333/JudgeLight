@@ -1,13 +1,17 @@
 # coding=utf-8
 import os
-import json
 import time
 import judgelight
 
 
 class Result(object):
+    ''' 另一个比较狗的类 '''
 
-    def __init__(self, result):
+    def __init__(self, cmd, time_limit, memory_limit, result):
+        self.cmd = cmd
+        self.time_limit = time_limit
+        self.memory_limit = memory_limit
+
         self.ru_utime = result['ru_utime']
         self.ru_stime = result['ru_stime']
         self.ru_maxrss = result['ru_maxrss']
@@ -27,6 +31,35 @@ class Result(object):
         self.time_used = result['time_used']
         self.memory_used = result['memory_used']
         self.status = result['status']
+        self.error = result['error']
+        self.reason = result['reason']
+        self.reason_str = 'None'
+
+        if self.error:  # 整理错误类型
+            if self.reason == 'SIGSEGV':
+                if self.memory_limit != -1 and self.memory_used > self.memory_limit:
+                    self.reason_str = 'Memory Limit Exceeded'
+                else:
+                    self.reason_str = 'Memory Limit Exceeded or Runtime Error'
+            elif self.reason == 'SIGALRM' or self.reason == 'SIGXCPU':
+                self.reason_str = 'Time Limit Exceeded'
+            else:
+                self.reason_str = 'Runtime Error'
+        elif self.time_limit != -1 and self.time_used > self.time_limit:  # 如果同时mle和tle 那么显示为mle 没有为啥 就是随便一写
+            self.reason_str = 'Time Limit Exceeded'
+        elif self.memory_limit != -1 and self.memory_used > self.memory_limit:
+            self.reason_str = 'Memory Limit Exceeded'
+
+    def __str__(self):
+        return '''
+cmd:\t\t{}
+time_limit:\t{}
+memory_limit:\t{}
+time_used:\t{}
+memory_used:\t{}
+error:\t\t{}
+reason:\t\t{}
+    '''.format(self.cmd, self.time_limit, self.memory_limit, self.time_used, self.memory_used, self.error, self.reason_str)
 
 
 class JudgeLight(object):
@@ -37,6 +70,8 @@ class JudgeLight(object):
         创建子进程
         '''
         self.pid, self.operin, self.operout = judgelight.init()
+        self._time_limit = -1
+        self._memory_limit = -1
 
     def _send(self, msg):
         os.write(self.operin, msg + '\0')
@@ -150,20 +185,9 @@ class JudgeLight(object):
             self.close()
         except:
             self.close()
-        return Result(self.result)
+        return Result(cmd, self.time_limit, self.memory_limit, self.result)
 
     def close(self):
         ''' 清理文件描述符和其他的一些操作 '''
         os.close(self.operin)
         os.close(self.operout)
-
-
-def test(cmd):
-    s = JudgeLight()
-    s.run(cmd)
-    print json.dumps(s.result, indent=2)
-
-
-if __name__ == '__main__':
-    test('g++ test1.cpp')
-    test('./a.out')

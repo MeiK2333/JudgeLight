@@ -6,12 +6,16 @@
 作为一个本地服务，她也可以用于获得程序运行占用资源，可以直观的看出自己程序的性能（大体上...），或者用于测试数据大小是否合理。  
 还有就是，以上功能，我其实都没有实现。
 
+
 ## 编译指令
 ```shell
 gcc -fPIC -shared judgelight.c limit.c listen.c run.c -o judgelight.so -I/usr/include/python2.7/ -lpython2.7
 ```
 
+
 ## 使用
+ 
+### 基础
 ```python
 >>> from judgelight import judgelight
 >>> judgelight()
@@ -49,6 +53,18 @@ reason:		Time Limit Exceeded
 '''
 ```
 
+### 重定向流
+JudgeLight可以重定向将要运行的程序的stdin、stdout、stderr流，前提是她必须认识要重定向的管道
+```python
+>>> judge = JudgeLight()
+>>> f = open('test.txt')
+>>> judge.stdin = f.fileno()  # 错误，judge并不认识这个管道
+
+>>> f = open('test2.txt', 'w')
+>>> judge = JudgeLight()
+>>> judge.stdout = f.fileno()  # 重定向程序的输出流到文件
+```
+
 ### Special Judge Test
 ```python
 compile = JudgeLight()
@@ -79,6 +95,10 @@ sout.close()
 # special judge server的程序可以通过程序运行的返回值来标识用户程序是否正确
 print json.dumps(judge_server.result, indent=4)
 ```
+
+### 交互式评测
+待添加
+
 
 ## 其他问题
 

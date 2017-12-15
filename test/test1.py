@@ -4,6 +4,7 @@ from Judge import JudgeLight
 
 def test(cmd):
     s = JudgeLight()
+    s.fork()
     print s.run(cmd)
 
 

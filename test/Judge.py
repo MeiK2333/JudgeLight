@@ -66,15 +66,16 @@ class JudgeLight(object):
     ''' 一个比较狗的类 '''
 
     def __init__(self):
-        '''
-        创建子进程
-        '''
-        self.pid, self.operin, self.operout = judgelight.init()
-        self._time_limit = -1
-        self._memory_limit = -1
+        ''' 完成初始化 '''
+        self.time_limit = -1
+        self.memory_limit = -1
         self.stdin = -1
         self.stdout = -1
         self.stderr = -1
+
+    def fork(self):
+        ''' 创建子进程 '''
+        self.pid, self.operin, self.operout = judgelight.init()
 
     def _send(self, msg):
         os.write(self.operin, msg + '\0')
@@ -132,16 +133,16 @@ class JudgeLight(object):
         self._send(str(time))
 
     @property
-    def time_limit(self):
-        return self._time_limit
+    def _time_limit(self):
+        return self.time_limit
 
-    @time_limit.setter
-    def time_limit(self, value):
+    @_time_limit.setter
+    def _time_limit(self, value):
         ''' 设置时间限制（单位：ms） '''
         assert type(value) == int
         self.set_cpu_time(value)
         self.set_real_time(value + 1000)
-        self._time_limit = value
+        self.time_limit = value
 
     def set_data(self, value):
         ''' 设置数据段长度限制 '''
@@ -168,17 +169,17 @@ class JudgeLight(object):
         self._send(str(fd))
 
     @property
-    def memory_limit(self):
-        return self._memory_limit
+    def _memory_limit(self):
+        return self.memory_limit
 
-    @memory_limit.setter
-    def memory_limit(self, value):
+    @_memory_limit.setter
+    def _memory_limit(self, value):
         ''' 设置内存限制（单位：KB） '''
         assert type(value) == int
         self.set_data(value)
         self.set_as(value * 2)
         self.set_stack(256 * 1024)
-        self._memory_limit = value
+        self.memory_limit = value
 
     def run(self, cmd):
         ''' runit '''
@@ -188,6 +189,10 @@ class JudgeLight(object):
             self._stdout = self.stdout
         if self.stderr != -1:
             self._stderr = self.stderr
+        if self.time_limit != -1:
+            self._time_limit = self.time_limit
+        if self.memory_limit != -1:
+            self._memory_limit = self.memory_limit
 
         self._send('run')
         args = cmd.split()

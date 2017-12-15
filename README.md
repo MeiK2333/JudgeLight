@@ -27,8 +27,9 @@ gcc -fPIC -shared judgelight.c limit.c listen.c run.c -o judgelight.so -I/usr/in
 
 >>> from Judge import JudgeLight
 >>> judge = JudgeLight()
->>> judge.time_limit = 10000  # 注意从 judge 创建的时候 realtime 就开始计时，因此如果要限制time的话，应尽量避免在控制台中限制
+>>> judge.time_limit = 10000  # <del>注意从 judge 创建的时候 realtime 就开始计时，因此如果要限制time的话，应尽量避免在控制台中限制</del> JudgeLight在执行fork后才会开始计时
 >>> judge.memory_limit = 65536
+>>> judge.fork()  # 在运行之前应该执行此操作
 >>> print judge.run('g++ test2.cpp -o test2.out')  # run 之后无法对 judge 再做操作
 '''
 cmd:		g++ test2.cpp -o test2.out
@@ -45,6 +46,7 @@ reason:		None
 >>> judge = JudgeLight()
 >>> judge.time_limit = 1000
 >>> judge.memory_limit = 65536
+>>> judge.fork()
 >>> print judge.run('./test2.out')
 '''
 cmd:		./test2.out
@@ -58,12 +60,14 @@ reason:		Time Limit Exceeded
 ```
 
 ### 重定向流
-JudgeLight可以重定向将要运行的程序的stdin、stdout、stderr流，前提是她必须认识要重定向的管道
+JudgeLight可以重定向将要运行的程序的stdin、stdout、stderr流，前提是她必须认识要重定向的管道（必须在JudgeLight fork之前被创建）
 ```python
 >>> judge = JudgeLight()
 >>> f = open('test.txt')
->>> judge.stdin = f.fileno()  # 错误，judge并不认识这个管道
+>>> judge.stdin = f.fileno()  # <del>错误，judge并不认识这个管道</del>可以，现在JudgeLight认识所有在fork之前产生的管道与文件描述符
+```
 
+```python
 >>> f = open('test2.txt', 'w')
 >>> judge = JudgeLight()
 >>> judge.stdout = f.fileno()  # 重定向程序的输出流到文件
@@ -72,14 +76,17 @@ JudgeLight可以重定向将要运行的程序的stdin、stdout、stderr流，�
 ### Special Judge Test
 ```python
 compile = JudgeLight()
+compile.fork()
 compile.run('g++ specialjudgeserver.cpp -o spjs.out')
 compile = JudgeLight()
+compile.fork()
 compile.run('g++ specialjudgecli.cpp -o spjc.out')
 
 # judgelight中的流只能重定向为她认识的管道，也就是说，如果想要改变某个流，那么相应的管道必须在JudgeLight类初始化之前被创建
 fout = open('tmp.out', 'w')
 
 judge_cli = JudgeLight()
+judge_cli.fork()
 judge_cli.time_limit = 1000
 judge_cli.memory_limit = 10000
 judge_cli.stdout = fout.fileno()
@@ -90,6 +97,7 @@ fin = open('tmp.out')
 sout = open('spj.out', 'w')
 
 judge_server = JudgeLight()
+judge_server.fork()
 judge_server.stdin = fin.fileno()
 judge_server.stdout = sout.fileno()
 rst = judge_server.run('./spjs.out')
@@ -116,7 +124,7 @@ print json.dumps(judge_server.result, indent=4)
 
 ## 下一步（设想）
 - <del>交互式评测</del>
-- 修改JudgeLight的子进程创建时间为run的时候（现在在创建类对象的时候就会fork子进程，讲道理使用起来会有点怪）
-- 提供更加合理的使用接口（现在的时间限制和重定向有些不合常理的用法）
+- <del>修改JudgeLight的子进程创建时间为run的时候（现在在创建类对象的时候就会fork子进程，讲道理使用起来会有点怪）</del>
+- <del>提供更加合理的使用接口（现在的时间限制和重定向有些不合常理的用法）</del>
 - 整理出成型的OJ评测姬（我的初步设想是为每个题目创建自己的评测程序，以此获得最大限度的自由和灵活。至于效率......再说吧）
 - 其他......

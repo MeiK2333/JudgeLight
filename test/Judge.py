@@ -72,49 +72,52 @@ class JudgeLight(object):
         self.pid, self.operin, self.operout = judgelight.init()
         self._time_limit = -1
         self._memory_limit = -1
+        self.stdin = -1
+        self.stdout = -1
+        self.stderr = -1
 
     def _send(self, msg):
         os.write(self.operin, msg + '\0')
         os.read(self.operout, 10)
 
     @property
-    def stdin(self):
-        return self._stdin
+    def _stdin(self):
+        return self.stdin
 
-    @stdin.setter
-    def stdin(self, fd):
+    @_stdin.setter
+    def _stdin(self, fd):
         ''' 设置输入流 '''
         assert type(fd) == int
         self._send('fd')
         self._send('in')
         self._send(str(fd))
-        self._stdin = fd
+        self.stdin = fd
 
     @property
-    def stdout(self):
-        return self._stdout
+    def _stdout(self):
+        return self.stdout
 
-    @stdout.setter
-    def stdout(self, fd):
+    @_stdout.setter
+    def _stdout(self, fd):
         ''' 设置输出流 '''
         assert type(fd) == int
         self._send('fd')
         self._send('out')
         self._send(str(fd))
-        self._stdout = fd
+        self.stdout = fd
 
     @property
-    def stderr(self):
-        return self._stderr
+    def _stderr(self):
+        return self.stderr
 
-    @stderr.setter
-    def stderr(self, fd):
+    @_stderr.setter
+    def _stderr(self, fd):
         ''' 设置错误流 '''
         assert type(fd) == int
         self._send('fd')
         self._send('err')
         self._send(str(fd))
-        self._stderr = fd
+        self.stderr = fd
 
     def set_real_time(self, time):
         ''' 为子进程设置真实时间 '''
@@ -179,6 +182,13 @@ class JudgeLight(object):
 
     def run(self, cmd):
         ''' runit '''
+        if self.stdin != -1:
+            self._stdin = self.stdin
+        if self.stdout != -1:
+            self._stdout = self.stdout
+        if self.stderr != -1:
+            self._stderr = self.stderr
+
         self._send('run')
         args = cmd.split()
         self._send(str(len(args)))

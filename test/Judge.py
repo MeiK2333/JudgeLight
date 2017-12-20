@@ -1,5 +1,7 @@
+#!/usr/bin/env python
 # coding=utf-8
 import os
+import sys
 import time
 import judgelight
 
@@ -53,10 +55,10 @@ class Result(object):
     def __str__(self):
         return '''
 cmd:\t\t{}
-time_limit:\t{}
-memory_limit:\t{}
-time_used:\t{}
-memory_used:\t{}
+time_limit:\t{} ms
+memory_limit:\t{} kb
+time_used:\t{} ms
+memory_used:\t{} kb
 error:\t\t{}
 reason:\t\t{}
     '''.format(self.cmd, self.time_limit, self.memory_limit, self.time_used, self.memory_used, self.error, self.reason_str)
@@ -213,3 +215,11 @@ class JudgeLight(object):
         ''' 清理文件描述符和其他的一些操作 '''
         os.close(self.operin)
         os.close(self.operout)
+
+
+if __name__ == '__main__':
+    cmd = ' '.join(sys.argv[1:])
+    judge = JudgeLight()
+    judge.fork()
+    rst = judge.run(cmd)
+    print >> sys.stderr, rst

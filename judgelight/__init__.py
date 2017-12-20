@@ -221,6 +221,7 @@ class JudgeLight(object):
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print >> sys.stderr, '需要提供命令'
+        exit(0)
     cmd = ' '.join(sys.argv[1:])
     judge = JudgeLight()
     judge.fork()

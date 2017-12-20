@@ -45,7 +45,7 @@ void _listen(int operin, int operout)
             read(operin, tmp, READ_MAX);
             READEND;
 
-            int fd = str2long(tmp);
+            int fd = (int)str2long(tmp);
             if (strcmp(readbuffer, "in") == 0)
             {
                 dup2(fd, 0);
@@ -68,14 +68,14 @@ void _listen(int operin, int operout)
             read(operin, readbuffer, READ_MAX);
             READEND;
 
-            int cnt = str2long(readbuffer);
+            int cnt = (int)str2long(readbuffer);
             char **args = (char **)malloc(sizeof(char *) * (cnt + 1));
             for (int i = 0; i < cnt; i++)
             {
                 read(operin, readbuffer, READ_MAX);
                 READEND;
 
-                int len = str2long(readbuffer);
+                int len = (int)str2long(readbuffer);
                 char *tmp = (char *)malloc(sizeof(char) * (len + 1));
 
                 read(operin, readbuffer, READ_MAX);

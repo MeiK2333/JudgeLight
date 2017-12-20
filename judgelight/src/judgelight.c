@@ -71,7 +71,7 @@ static PyObject *genResult(struct Result result)
 
 static PyObject *run(PyObject *self, PyObject *args)
 {
-    pid_t pid = PyLong_AsLong(args);
+    pid_t pid = (pid_t)PyLong_AsLong(args);
     struct Result result = runit(pid);
     return genResult(result);
 }

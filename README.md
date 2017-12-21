@@ -79,8 +79,8 @@ status:		0
 LICENSE		README.md	install.sh	judgelight	setup.py
 
 cmd:		ls
-time_limit:	-1 ms
-memory_limit:	-1 kb
+time_limit:	1000 ms
+memory_limit:	10000 kb
 time_used:	0 ms
 memory_used:	1236 kb
 error:		0

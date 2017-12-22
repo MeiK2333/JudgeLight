@@ -9,5 +9,9 @@ setup(
     name='judgelight',
     version='1.0.0',
     ext_modules=[Extension('judgelight/judgelight', sources=sources)],
-    packages=['judgelight']
+    packages=['judgelight'],
+    license='Free',
+    author='MeiK',
+    author_email='meik2333@gmail.com',
+    url='https://github.com/MeiK-h/JudgeLight2'
 )

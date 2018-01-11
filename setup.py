@@ -13,5 +13,5 @@ setup(
     license='Free',
     author='MeiK',
     author_email='meik2333@gmail.com',
-    url='https://github.com/MeiK-h/JudgeLight2'
+    url='https://github.com/MeiK-h/JudgeLight2',
 )

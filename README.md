@@ -10,6 +10,13 @@
 ## 安装
 
 ### 作为Python模块
+
+现在可以直接 pip 安装
+```bash
+pip install judgelight
+```
+
+或者其他的方式
 ```bash
 $ python setup.py install
 $ python

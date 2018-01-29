@@ -7,10 +7,9 @@ sources = [
 ]
 setup(
     name='judgelight',
-    version='1.0.3',
+    version='1.0.4',
     ext_modules=[Extension('judgelight/judgelight', sources=sources)],
     packages=['judgelight'],
-    python_requires='<=2.7',
     license='Free',
     author='MeiK',
     author_email='meik2333@gmail.com',

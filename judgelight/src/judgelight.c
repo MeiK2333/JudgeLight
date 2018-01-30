@@ -64,7 +64,11 @@ static PyObject *genResult(struct Result result) {
 }
 
 static PyObject *run(PyObject *self, PyObject *args) {
-    pid_t pid = (pid_t)PyLong_AsLong(args);
+    pid_t pid;
+    if (!PyArg_ParseTuple(args, "i", &pid)) {
+        return NULL;
+    }
+    // pid_t pid = (pid_t)PyLong_AsLong(args);
     struct Result result = runit(pid);
     return genResult(result);
 }

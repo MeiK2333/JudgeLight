@@ -3,7 +3,7 @@
 import os
 import sys
 import time
-import judgelight
+from . import judgelight
 
 
 class Result(object):
@@ -81,7 +81,10 @@ class JudgeLight(object):
         self.pid, self.operin, self.operout = judgelight.init()
 
     def _send(self, msg):
-        os.write(self.operin, msg + '\0')
+        if sys.version_info.major >= 3:
+            os.write(self.operin, str.encode(msg + '\0'))
+        else:
+            os.write(self.operin, msg + '\0')
         os.read(self.operout, 10)
 
     @property

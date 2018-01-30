@@ -7,7 +7,7 @@ sources = [
 ]
 setup(
     name='JudgeLight',
-    version='1.0.5',
+    version='1.0.6',
     ext_modules=[Extension('JudgeLight/judgelight', sources=sources)],
     packages=['JudgeLight'],
     license='Free',

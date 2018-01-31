@@ -84,7 +84,7 @@ static PyMethodDef JudgeLightMethods[] = {
 static struct PyModuleDef judgelightmodule = {
     PyModuleDef_HEAD_INIT, "judgelight", "judgelight", -1, JudgeLightMethods};
 
-PyMODINIT_FUNC PyInit_judgelight(void) {
+PyMODINIT_FUNC PyInit_judgelight_cext(void) {
     return PyModule_Create(&judgelightmodule);
 }
 
@@ -96,8 +96,8 @@ static PyMethodDef GreateModuleMethods[] = {
     {"run", run, METH_VARARGS, ""},
     {NULL, NULL, 0, NULL}};
 
-PyMODINIT_FUNC initjudgelight(void) {
-    (void)Py_InitModule("judgelight", GreateModuleMethods);
+PyMODINIT_FUNC initjudgelight_cext(void) {
+    (void)Py_InitModule("judgelight_cext", GreateModuleMethods);
 }
 
 #endif

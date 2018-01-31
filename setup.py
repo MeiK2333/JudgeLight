@@ -6,10 +6,10 @@ sources = [
     'judgelight/src/judgelight.c', 'judgelight/src/limit.c', 'judgelight/src/listen.c', 'judgelight/src/run.c'
 ]
 setup(
-    name='JudgeLight',
-    version='1.0.6',
-    ext_modules=[Extension('JudgeLight/judgelight', sources=sources)],
-    packages=['JudgeLight'],
+    name='judgelight',
+    version='1.0.7',
+    ext_modules=[Extension('judgelight/judgelight_cext', sources=sources)],
+    packages=['judgelight'],
     license='Free',
     author='MeiK',
     author_email='meik2333@gmail.com',

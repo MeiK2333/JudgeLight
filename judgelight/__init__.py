@@ -3,7 +3,7 @@
 import os
 import sys
 import time
-from . import judgelight
+from . import judgelight_cext
 
 
 class Result(object):
@@ -78,7 +78,7 @@ class JudgeLight(object):
 
     def fork(self):
         ''' 创建子进程 '''
-        self.pid, self.operin, self.operout = judgelight.init()
+        self.pid, self.operin, self.operout = judgelight_cext.init()
 
     def _send(self, msg):
         if sys.version_info.major >= 3:
@@ -208,7 +208,7 @@ class JudgeLight(object):
             self._send(arg)
         self._send('go')
         time.sleep(0.01)
-        self.result = judgelight.run(self.pid)
+        self.result = judgelight_cext.run(self.pid)
         try:
             self.close()
         except:

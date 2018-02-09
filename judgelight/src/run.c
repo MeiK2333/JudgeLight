@@ -50,6 +50,7 @@ struct Result runit(pid_t pid)
             result.reason = "OTHER";
             break;
         }
+        result.status = WTERMSIG(status);
     }
     else
     {

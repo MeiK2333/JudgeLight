@@ -147,7 +147,7 @@ class JudgeLight(object):
         ''' 设置时间限制（单位：ms） '''
         assert type(value) == int
         self.set_cpu_time(value)
-        self.set_real_time(value + 1000)
+        self.set_real_time(value * 2 + 5000)  # The normal program's run time may also be much longer than its cpu time
         self.time_limit = value
 
     def set_data(self, value):

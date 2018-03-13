@@ -1,6 +1,7 @@
 #include <sys/resource.h>
 #include <sys/time.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "limit.h"
 
@@ -38,6 +39,10 @@ int setRunLimit(char *type, unsigned long long l)
         rl.rlim_cur = l * 1024;
         rl.rlim_max = rl.rlim_cur + 1024;
         setrlimit(RLIMIT_STACK, &rl);
+    }
+    else if (strcmp(type, "setuid") == 0)  // 设置运行用户
+    {
+        setuid(l);
     }
     return 0;
 }

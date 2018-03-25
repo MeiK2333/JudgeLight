@@ -75,6 +75,7 @@ class JudgeLight(object):
         self.stdin = -1
         self.stdout = -1
         self.stderr = -1
+        self.uid = -1
 
     def fork(self):
         ''' 创建子进程 '''
@@ -147,7 +148,8 @@ class JudgeLight(object):
         ''' 设置时间限制（单位：ms） '''
         assert type(value) == int
         self.set_cpu_time(value)
-        self.set_real_time(value * 2 + 5000)  # The normal program's run time may also be much longer than its cpu time
+        # The normal program's run time may also be much longer than its cpu time
+        self.set_real_time(value * 2 + 5000)
         self.time_limit = value
 
     def set_data(self, value):
@@ -175,6 +177,20 @@ class JudgeLight(object):
         self._send(str(fd))
 
     @property
+    def _uid(self):
+        return self.uid
+
+    @_uid.setter
+    def _uid(self, uid):
+        self.set_uid(uid)
+
+    def set_uid(self, uid):
+        ''' 修改运行用户 '''
+        self._send('limit')
+        self._send('setuid')
+        self._send(str(uid))
+
+    @property
     def _memory_limit(self):
         return self.memory_limit
 
@@ -199,6 +215,8 @@ class JudgeLight(object):
             self._time_limit = self.time_limit
         if self.memory_limit != -1:
             self._memory_limit = self.memory_limit
+        if self.uid != -1:
+            self._uid = self.uid
 
         self._send('run')
         args = cmd.split()

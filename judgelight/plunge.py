@@ -1,10 +1,11 @@
 # coding=utf-8
+import json
 import os
 import re
-import sys
-import json
 import subprocess
-from config import Config
+import sys
+
+from config import PLUNGE_PATH
 
 
 def get_int_form_str(string):
@@ -20,7 +21,7 @@ class Plunge(object):
     def __init__(self, run_file_name, in_file_name=None, out_file_name=None, err_file_name='/dev/null',
                  max_cpu_time=None, max_real_time=None, max_memory=None, uid=None, gid=None, args=None,
                  max_stack=None, max_output_size=None):
-        cmd = [Config.plunge_path,
+        cmd = [PLUNGE_PATH,
                '--run_file_name={run_file_name}'.format(run_file_name=run_file_name)]
         if args:
             assert isinstance(args, list)

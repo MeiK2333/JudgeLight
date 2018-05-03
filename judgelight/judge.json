@@ -11,6 +11,7 @@
             "ans_file": "/home/meik/JudgeLight/data/data2.ans"
         }
     ],
+    "judge_all": true,
     "time_limit": 1000,
     "memory_limit": 65535,
     "in_validator": null,

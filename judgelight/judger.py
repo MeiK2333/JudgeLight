@@ -5,11 +5,18 @@ import sys
 import uuid
 from shutil import rmtree
 
-from config import LANGUAGES, COMPILE_MEMORY_LIMIT, COMPILE_TIME_LIMIT
+from config import (COMPILE_MEMORY_LIMIT, COMPILE_TIME_LIMIT, LANGUAGES,
+                    STAND_DIFF_PROCESS_CMD, STAND_DIFF_PROCESS_PATH,
+                    VALIDATOR_MEMORY_LIMIT, VALIDATOR_TIME_LILIT)
 from plunge import Plunge
 from result import Result
 
 result = Result()
+
+
+def stderr_log(site, msg):
+    """ 将 log 输出到 stderr """
+    sys.stderr.write('{site}: {msg}\n'.format(site=site, msg=msg))
 
 
 def main():
@@ -38,6 +45,7 @@ def main():
         result.message = 'Unknown language \'{}\''.format(language)
         result.exit()
     run_dir = init_file(judge_data)
+    stderr_log('init', 'success')
     compile_it(judge_data, run_dir)
     run_it(judge_data, run_dir)
     clear_run_dir(run_dir)
@@ -75,14 +83,53 @@ def init_file(judge_data):
     return run_dir
 
 
-def in_validator(judge_data):
+def in_validator(judge_data, in_file, ans_file):
     """ 输入过滤 """
-    pass
+    data = {
+        'time_used': -1,
+        'memory_used': -1,
+        'exit_code': -1,
+        'signal': -1,
+        'message': '',
+    }
+    return data
 
 
-def out_validator(judge_data):
+def out_validator(judge_data, in_file, ans_file, out_file):
     """ 输出过滤 """
-    pass
+    data = {
+        'time_used': -1,
+        'memory_used': -1,
+        'exit_code': -1,
+        'signal': -1,
+        'message': '',
+    }
+
+    process = judge_data.get('out_validator')
+    cmd = judge_data.get('out_validator')
+    if not process:
+        process = STAND_DIFF_PROCESS_PATH
+        cmd = STAND_DIFF_PROCESS_CMD
+    cmd = cmd.format(in_file=in_file, out_file=out_file,
+                     ans_file=ans_file, process=process)
+    cmd = cmd.split()
+    plunge = Plunge(
+        cmd[0],
+        args=cmd[1:],
+        max_cpu_time=VALIDATOR_TIME_LILIT,
+        max_real_time=VALIDATOR_TIME_LILIT,
+        max_memory=VALIDATOR_MEMORY_LIMIT,
+        out_file_name='out_validator.out'
+    )
+    plunge.run()
+
+    data['time_used'] = plunge.data['cpu_time']
+    data['memory_used'] = plunge.data['memory']
+    data['exit_code'] = plunge.data['exit_code']
+    data['signal'] = plunge.data['signal']
+    with open('out_validator.out') as fr:
+        data['message'] = fr.read()
+    return data
 
 
 def compile_it(judge_data, run_dir):
@@ -117,6 +164,7 @@ def compile_it(judge_data, run_dir):
 
     # 切换回来工作目录
     os.chdir(this_dir)
+    stderr_log('compile', 'success')
 
 
 def run_it(judge_data, run_dir):
@@ -125,13 +173,35 @@ def run_it(judge_data, run_dir):
     # 切换工作目录
     os.chdir(run_dir)
 
+    data_cnt = 0
+    judge_all = judge_data.get('judge_all')
     for data in judge_data['data']:
+        data_cnt += 1
+        run_it_data = {
+            'in_validator': {},
+            'runner': {},
+            'out_validator': {}
+        }
+
+        # in_validator
+        if judge_data.get('in_validator'):
+            run_it_data['in_validator'] = in_validator(
+                judge_data, data['in_file'], data['ans_file'])
+            if run_it_data['in_validator']['exit_code'] == 0:
+                stderr_log('in_validator {cnt}'.format(
+                    cnt=data_cnt), 'success')
+            else:
+                stderr_log('in_validator {cnt}'.format(
+                    cnt=data_cnt), 'failure')
+                if not judge_all:
+                    result.exit()
+
         # 限制资源运行
         run_cmd = LANGUAGES[judge_data['language']]['run'].split()
         plunge = Plunge(
             run_file_name=run_cmd[0],
             args=run_cmd[1:],
-            max_cpu_time=judge_data['time_limit'],
+            max_cpu_time=judge_data['time_limit'] + 500,
             max_real_time=judge_data['time_limit'] * 2 + 5000,
             max_memory=judge_data['memory_limit'] * 1024,
             in_file_name=data['in_file'],
@@ -142,15 +212,47 @@ def run_it(judge_data, run_dir):
 
         run_data = {}
 
+        # 收集运行数据
         run_data['time_used'] = plunge.data['cpu_time']
         run_data['memory_used'] = plunge.data['memory']
         run_data['exit_code'] = plunge.data['exit_code']
         run_data['signal'] = plunge.data['signal']
         with open('run.err') as fr:
             run_data['message'] = fr.read()
-        result.run.append(run_data)
+        run_it_data['runner'] = run_data
+        # 标记此组 run 完成
+        stderr_log('run {cnt}'.format(cnt=data_cnt), 'success')
+
+        # 验证 out_validator
+        if test_run_error(judge_data, run_data) == 0:
+            run_it_data['out_validator'] = out_validator(
+                judge_data, data['in_file'], data['ans_file'], 'run.out')
+            if run_it_data['out_validator']['exit_code'] == 0:
+                stderr_log('out_validator {cnt}'.format(
+                    cnt=data_cnt), 'success')
+            else:
+                stderr_log('out_validator {cnt}'.format(
+                    cnt=data_cnt), 'failure')
+                if not judge_all:
+                    result.exit()
+        elif not judge_all:
+            result.exit()
+
+        result.run.append(run_it_data)
+
     # 切换回来工作目录
     os.chdir(this_dir)
+
+
+def test_run_error(judge_data, run_data):
+    """ 返回此组测试是否出错 """
+    if run_data['signal'] != 0:
+        return run_data['signal']
+    if run_data['time_used'] > judge_data['time_limit']:
+        return 1
+    if run_data['memory_used'] > judge_data['memory_limit']:
+        return 1
+    return 0
 
 
 def clear_run_dir(run_dir):
@@ -159,9 +261,10 @@ def clear_run_dir(run_dir):
 
 
 if __name__ == '__main__':
-    try:
-        main()
-    except Exception as e:
-        print(repr(e))
-        result.message = 'Unknown error'
-        result.exit()
+    main()
+    # try:
+    #     main()
+    # except Exception as e:
+    #     print(repr(e))
+    #     result.message = 'Unknown error'
+    #     result.exit()

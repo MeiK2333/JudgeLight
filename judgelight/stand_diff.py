@@ -9,7 +9,7 @@ def diff(out, ans):
         return 0
     if out.split() == ans.split():
         return 1
-    return 1
+    return 2
 
 
 if __name__ == '__main__':

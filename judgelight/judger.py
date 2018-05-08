@@ -223,8 +223,9 @@ def run_it(judge_data, run_dir):
         # 标记此组 run 完成
         stderr_log('run {cnt}'.format(cnt=data_cnt), 'success')
 
+        run_it_data['runner']['signal'] = test_run_error(judge_data, run_data)
         # 验证 out_validator
-        if test_run_error(judge_data, run_data) == 0:
+        if run_it_data['runner']['signal'] == 0:
             run_it_data['out_validator'] = out_validator(
                 judge_data, data['in_file'], data['ans_file'], 'run.out')
             if run_it_data['out_validator']['exit_code'] == 0:
@@ -249,9 +250,9 @@ def test_run_error(judge_data, run_data):
     if run_data['signal'] != 0:
         return run_data['signal']
     if run_data['time_used'] > judge_data['time_limit']:
-        return 1
+        return 24
     if run_data['memory_used'] > judge_data['memory_limit']:
-        return 1
+        return 11
     return 0
 
 

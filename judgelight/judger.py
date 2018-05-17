@@ -262,10 +262,8 @@ def clear_run_dir(run_dir):
 
 
 if __name__ == '__main__':
-    main()
-    # try:
-    #     main()
-    # except Exception as e:
-    #     print(repr(e))
-    #     result.message = 'Unknown error'
-    #     result.exit()
+    try:
+        main()
+    except Exception as e:
+        result.message = 'Unknown error'
+        result.exit()

@@ -5,7 +5,7 @@ import sys
 import uuid
 from shutil import rmtree
 
-from config import (COMPILE_MEMORY_LIMIT, COMPILE_TIME_LIMIT, LANGUAGES,
+from config import (COMPILE_MEMORY_LIMIT, COMPILE_TIME_LIMIT,
                     STAND_DIFF_PROCESS_CMD, STAND_DIFF_PROCESS_PATH,
                     VALIDATOR_MEMORY_LIMIT, VALIDATOR_TIME_LILIT)
 from plunge import Plunge
@@ -39,11 +39,6 @@ def main():
             result.message = 'field \'{field}\' is required'.format(
                 field=field)
             result.exit()
-    language = judge_data.get('language', 'unknown')
-    # 检查语言是否存在
-    if language not in LANGUAGES:
-        result.message = 'Unknown language \'{}\''.format(language)
-        result.exit()
     run_dir = init_file(judge_data)
     stderr_log('init', 'success')
     compile_it(judge_data, run_dir)
@@ -76,7 +71,7 @@ def init_file(judge_data):
         result.message = 'mkdir error'
         result.exit()
     language = judge_data['language']
-    file_name = LANGUAGES[language]['file_name']
+    file_name = judge_data['file_name']
     # 将代码写入文件
     with open(os.path.join(run_dir, file_name), 'w') as fw:
         fw.write(judge_data['code'])
@@ -139,7 +134,7 @@ def compile_it(judge_data, run_dir):
     os.chdir(run_dir)
 
     # 限制资源编译
-    compile_cmd = LANGUAGES[judge_data['language']]['compile'].split()
+    compile_cmd = judge_data['compile'].split()
     plunge = Plunge(
         run_file_name=compile_cmd[0],
         args=compile_cmd[1:],
@@ -197,7 +192,7 @@ def run_it(judge_data, run_dir):
                     result.exit()
 
         # 限制资源运行
-        run_cmd = LANGUAGES[judge_data['language']]['run'].split()
+        run_cmd = judge_data['run'].split()
         plunge = Plunge(
             run_file_name=run_cmd[0],
             args=run_cmd[1:],

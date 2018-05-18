@@ -1,6 +1,9 @@
 {
     "code": "print('3')",
     "language": "python",
+    "file_name": "main.py",
+    "compile": "python3 -m py_compile main.py",
+    "run": "python3 main.py",
     "data": [
         {
             "in_file": "/home/meik/JudgeLight/data/data1.in",

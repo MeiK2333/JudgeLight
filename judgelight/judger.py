@@ -70,7 +70,6 @@ def init_file(judge_data):
     if not os.path.exists(run_dir):
         result.message = 'mkdir error'
         result.exit()
-    language = judge_data['language']
     file_name = judge_data['file_name']
     # 将代码写入文件
     with open(os.path.join(run_dir, file_name), 'w') as fw:

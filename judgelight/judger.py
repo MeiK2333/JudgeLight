@@ -17,6 +17,7 @@ result = Result()
 def stderr_log(site, msg):
     """ 将 log 输出到 stderr """
     sys.stderr.write('{site}: {msg}\n'.format(site=site, msg=msg))
+    sys.stderr.flush()
 
 
 def set_fifo_stream(fifo_name, stream):

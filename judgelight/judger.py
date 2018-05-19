@@ -19,6 +19,20 @@ def stderr_log(site, msg):
     sys.stderr.write('{site}: {msg}\n'.format(site=site, msg=msg))
 
 
+def set_fifo_stream(fifo_name, stream):
+    """ 将流重定向到指定的 fifo 中 """
+    if fifo_name is None:
+        return
+    if os.path.exists(fifo_name):
+        os.remove(fifo_name)
+    fifo = os.open(fifo_name, os.O_SYNC | os.O_CREAT | os.O_RDWR)
+    fifo = open(fifo, 'w')
+    if stream == 'stderr':
+        sys.stderr = fifo
+    elif stream == 'stdout':
+        sys.stdout = fifo
+
+
 def main():
     if len(sys.argv) < 2:
         result.message = 'The parameter {judge_json_file} is required'
@@ -39,6 +53,8 @@ def main():
             result.message = 'field \'{field}\' is required'.format(
                 field=field)
             result.exit()
+    set_fifo_stream(judge_data.get('fifo.out'), 'stdout')
+    set_fifo_stream(judge_data.get('fifo.err'), 'stderr')
     run_dir = init_file(judge_data)
     stderr_log('init', 'success')
     compile_it(judge_data, run_dir)

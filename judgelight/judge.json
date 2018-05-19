@@ -17,8 +17,6 @@
     "judge_all": true,
     "time_limit": 1000,
     "memory_limit": 65535,
-    "in_validator": null,
-    "in_validator_common": null,
     "out_validator": null,
     "out_validator_common": null
 }

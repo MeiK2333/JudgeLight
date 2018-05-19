@@ -248,8 +248,9 @@ def run_it(judge_data, run_dir):
                 if not judge_all:
                     result.exit()
         elif not judge_all:
-            result.exit()
-
+            result.run.append(run_it_data)
+            os.chdir(this_dir)
+            return
         result.run.append(run_it_data)
 
     # 切换回来工作目录

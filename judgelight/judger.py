@@ -168,7 +168,7 @@ def compile_it(judge_data, run_dir):
     # 读取编译错误信息
     with open('compile.err') as fr:
         result.compile['message'] = fr.read()
-    if plunge.data['exit_code'] != 0:
+    if plunge.data['exit_code'] != 0 or plunge.data['signal'] != 0:
         result.message = 'Compile Error'
         clear_run_dir(run_dir)
         result.exit()

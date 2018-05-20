@@ -246,7 +246,9 @@ def run_it(judge_data, run_dir):
                 stderr_log('out_validator {cnt}'.format(
                     cnt=data_cnt), 'failure')
                 if not judge_all:
-                    result.exit()
+                    result.run.append(run_it_data)
+                    os.chdir(this_dir)
+                    return
         elif not judge_all:
             result.run.append(run_it_data)
             os.chdir(this_dir)

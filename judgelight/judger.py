@@ -117,7 +117,7 @@ def out_validator(judge_data, in_file, ans_file, out_file):
     }
 
     process = judge_data.get('out_validator')
-    cmd = judge_data.get('out_validator')
+    cmd = judge_data.get('out_validator_common')
     if not process:
         process = STAND_DIFF_PROCESS_PATH
         cmd = STAND_DIFF_PROCESS_CMD

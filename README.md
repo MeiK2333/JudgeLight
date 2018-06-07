@@ -1,5 +1,7 @@
 # JudgeLight
 
+等待更新
+
 ## rely
 
 [plunge](https://github.com/MeiK-h/plunge)
@@ -9,5 +11,5 @@
 
 exit_code:
   - Accepted: 0
-  - Wrong AnsWer: 1
+  - Wrong Answer: 1
   - Presentation Error: 2

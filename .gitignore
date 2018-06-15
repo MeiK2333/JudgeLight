@@ -101,5 +101,7 @@ ENV/
 .mypy_cache/
 
 .vscode/
+.idea/
+plunge
 .DS_Store
 MANIFEST

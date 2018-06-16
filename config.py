@@ -7,6 +7,7 @@ JUDGER_CONFIG = {
     'compile_time_limit': 10000,  # 编译时间限制 (ms)
     'compile_memory_limit': 1 * 1024 * 1024 * 1024,  # 编译内存限制 (byte)
     'validator': os.path.join(ABSPATH, 'validator.py'),  # 标准答案检查器
+    'validator_cmd': 'python3 {process} {in_file} {out_file} {ans_file}',  # 答案检查器执行命令
     'validator_time_limit': 10000,  # 答案检查器时间限制 (ms)
     'validator_memory_limit': 1 * 1024 * 1024 * 1024,  # 答案检查器内存限制 (byte)
     'data_dir': os.path.join(ABSPATH, 'data'),  # data 数据目录

@@ -1,10 +1,16 @@
 # coding=utf-8
 import redis
-import requests
 
 
 class Judger(object):
-    pass
+    def __init__(self):
+        pass
+
+    def save(self):
+        pass
+
+    def get(self):
+        pass
 
 
 class Result(object):

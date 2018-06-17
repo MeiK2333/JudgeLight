@@ -1,5 +1,7 @@
 # coding=utf-8
 import json
+import os
+from shutil import rmtree
 
 import redis
 
@@ -26,12 +28,46 @@ class Judger(object):
         self.memory_limit = memory_limit
         self.extend = extend
 
+    def init(self):
+        """
+        创建评测环境
+        :return:
+        """
+        work_dir = os.path.join(SYSTEM_CONFIG['work_dir'], str(self.runid))
+        if not os.path.exists(work_dir):
+            os.mkdir(work_dir)
+
+    def clear(self):
+        """
+        清理评测环境
+        :return:
+        """
+        work_dir = os.path.join(SYSTEM_CONFIG['work_dir'], str(self.runid))
+        rmtree(work_dir)
+
     def update(self):
         """
         更新评测状态
         :return:
         """
         pass
+
+    def set(self):
+        """
+        向判题队列中添加一个评测任务
+        :return:
+        """
+        data = {
+            'pid': self.pid,
+            'runid': self.runid,
+            'code': self.code,
+            'language': self.language,
+            'time_limit': self.time_limit,
+            'memory_limit': self.memory_limit,
+            'config': self.config,
+            'extend': self.extend
+        }
+        rdc.rpush(SYSTEM_CONFIG['redis_list'], json.dumps(data))
 
     @staticmethod
     def get():

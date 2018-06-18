@@ -80,3 +80,8 @@ class Plunge(object):
             elif field in str_field:
                 string = line[len(field) + 1:].strip()
                 self.result[field] = string
+
+    def to_json(self):
+        json = self.result.copy()
+        json.update({'out': self.out})
+        return json

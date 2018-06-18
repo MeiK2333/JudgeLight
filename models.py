@@ -19,7 +19,8 @@ class Judger(object):
         if config is None:
             config = {}
 
-        self.config = JUDGER_CONFIG.copy().update(config)
+        self.config = JUDGER_CONFIG.copy()
+        self.config.update(config)
         self.pid = pid
         self.runid = runid
         self.code = code
@@ -27,6 +28,7 @@ class Judger(object):
         self.time_limit = time_limit
         self.memory_limit = memory_limit
         self.extend = extend
+        self.result = None
 
     def init(self):
         """
@@ -50,7 +52,18 @@ class Judger(object):
         更新评测状态
         :return:
         """
-        pass
+        data = {
+            'pid': self.pid,
+            'runid': self.runid,
+            'code': self.code,
+            'language': self.language,
+            'time_limit': self.time_limit,
+            'memory_limit': self.memory_limit,
+            'config': self.config,
+            'extend': self.extend,
+            'result': self.result,
+        }
+        rdc.hset(SYSTEM_CONFIG['redis_result'], self.runid, json.dumps(data))
 
     def set(self):
         """

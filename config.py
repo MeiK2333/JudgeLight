@@ -11,6 +11,8 @@ JUDGER_CONFIG = {
     'validator_time_limit': 10000,  # 答案检查器时间限制 (ms)
     'validator_memory_limit': 1 * 1024 * 1024 * 1024,  # 答案检查器内存限制 (byte)
     'data_dir': os.path.join(ABSPATH, 'data'),  # data 数据目录
+    'uid': -1,  # 修改运行时的 uid (-1 则不修改)
+    'gid': -1,  # 修改运行时的 gid (-1 则不修改)
 
     # 支持的语言及其评测配置
     'language': {

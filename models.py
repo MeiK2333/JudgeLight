@@ -70,48 +70,52 @@ class Judger(object):
         rdc.rpush(SYSTEM_CONFIG['redis_list'], json.dumps(data))
 
     @staticmethod
-    def get():
+    def get(runid=None):
         """
-        获取一个待评测的 Judger
+        获取 Judger
         :return: Judger 实例
         """
-        task = rdc.blpop(SYSTEM_CONFIG['redis_list'])
-        data = bytes.decode(task[1])
+        if runid is None:  # 若没有提供 runid ，则从评测队列中取出一个
+            task = rdc.blpop(SYSTEM_CONFIG['redis_list'])
+            data = bytes.decode(task[1])
 
-        # 将 json 数据解析
-        try:
-            data = json.loads(data)
-        except json.JSONDecodeError:
-            logger.warning('json decode error: "{}"'.format(data))
-            return None
-        except Exception as e:
-            logger.warning('unknown error: "{}"'.format(repr(e)))
-            return None
+            # 将 json 数据解析
+            try:
+                data = json.loads(data)
+            except json.JSONDecodeError:
+                logger.warning('json decode error: "{}"'.format(data))
+                return None
+            except Exception as e:
+                logger.warning('unknown error: "{}"'.format(repr(e)))
+                return None
 
-        # 拿出所有数据
-        try:
-            pid = data['pid']
-            runid = data['runid']
-            code = data['code']
-            language = data['language']
-            time_limit = int(data['time_limit'])
-            memory_limit = int(data['memory_limit'])
-            config = data.get('config')
-            extend = data.get('extend')
-        except KeyError or ValueError or TypeError:
-            logger.warning('args parse error: "{}"'.format(data))
-            return None
-        except Exception as e:
-            logger.warning('unknown error: "{}"'.format(repr(e)))
-            return None
+            # 拿出所有数据
+            try:
+                pid = data['pid']
+                runid = data['runid']
+                code = data['code']
+                language = data['language']
+                time_limit = int(data['time_limit'])
+                memory_limit = int(data['memory_limit'])
+                config = data.get('config')
+                extend = data.get('extend')
+            except KeyError or ValueError or TypeError:
+                logger.warning('args parse error: "{}"'.format(data))
+                return None
+            except Exception as e:
+                logger.warning('unknown error: "{}"'.format(repr(e)))
+                return None
 
-        judger = Judger(pid=pid, runid=runid, code=code, language=language, time_limit=time_limit,
-                        memory_limit=memory_limit, config=config, extend=extend)
-        return judger
+            judger = Judger(pid=pid, runid=runid, code=code, language=language, time_limit=time_limit,
+                            memory_limit=memory_limit, config=config, extend=extend)
+            return judger
+        else:  # 否则获取 runid 对应的 Judger
+            pass
 
 
 class Result(object):
-    pass
+    def __init__(self, judger):
+        pass
 
 
 class TestCase(object):

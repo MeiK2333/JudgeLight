@@ -13,7 +13,7 @@ rdc = redis.StrictRedis(connection_pool=rdp)
 
 
 class Judger(object):
-    def __init__(self, pid, runid, code, language, time_limit, memory_limit, config=None, extend=None):
+    def __init__(self, pid, runid, code, language, time_limit, memory_limit, config=None, extend=None, result=None):
         if extend is None:
             extend = {}
         if config is None:
@@ -28,7 +28,7 @@ class Judger(object):
         self.time_limit = time_limit
         self.memory_limit = memory_limit
         self.extend = extend
-        self.result = None
+        self.result = result
 
     def init(self):
         """
@@ -123,12 +123,43 @@ class Judger(object):
                             memory_limit=memory_limit, config=config, extend=extend)
             return judger
         else:  # 否则获取 runid 对应的 Judger
-            pass
+            data = rdc.hget(SYSTEM_CONFIG['redis_result'], runid)
+
+            try:
+                data = json.loads(data)
+            except json.JSONDecodeError:
+                logger.warning('json decode error: "{}"'.format(data))
+                return None
+            except Exception as e:
+                logger.warning('unknown error: "{}"'.format(repr(e)))
+                return None
+            try:
+                pid = data['pid']
+                runid = data['runid']
+                code = data['code']
+                language = data['language']
+                time_limit = int(data['time_limit'])
+                memory_limit = int(data['memory_limit'])
+                config = data.get('config')
+                extend = data.get('extend')
+                result = data.get('result')
+            except KeyError or ValueError or TypeError:
+                logger.warning('args parse error: "{}"'.format(data))
+                return None
+            except Exception as e:
+                logger.warning('unknown error: "{}"'.format(repr(e)))
+                return None
+
+            judger = Judger(pid=pid, runid=runid, code=code, language=language, time_limit=time_limit,
+                            memory_limit=memory_limit, config=config, extend=extend, result=result)
+            return judger
 
 
 class Result(object):
     def __init__(self, judger):
-        pass
+        if isinstance(judger, int):
+            judger = Judger.get(judger)
+        self.judger = judger
 
 
 class TestCase(object):

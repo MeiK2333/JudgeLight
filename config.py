@@ -13,6 +13,7 @@ JUDGER_CONFIG = {
     'data_dir': os.path.join(ABSPATH, 'data'),  # data 数据目录
     'uid': -1,  # 修改运行时的 uid (-1 则不修改)
     'gid': -1,  # 修改运行时的 gid (-1 则不修改)
+    'all_judge': True,  # 是否评测所有数据 (如果为 False ，则会在遇到评测错误的时候终止)
 
     # 支持的语言及其评测配置
     'language': {

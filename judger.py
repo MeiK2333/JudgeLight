@@ -4,10 +4,32 @@ from multiprocessing import Pool
 from config import SYSTEM_CONFIG
 from logger import logger
 from models import Judger
+from plunge import Plunge
+
+
+def check_it(judger):
+    pass
+
+
+def run_it(judger):
+    pass
+
+
+def run(judger):
+    logger.info('{} run start'.format(judger.runid))
+
+    logger.info('{} run end'.format(judger.runid))
+
+
+def compile_it(judger):
+    logger.info('{} compile start'.format(judger.runid))
+
+    logger.info('{} compile end'.format(judger.runid))
 
 
 def work(judger):
     logger.info('judger {} start'.format(judger.runid))
+    compile_it(judger)
 
 
 def main():

@@ -3,5 +3,8 @@
 
 #include <jl_cycle.h>
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 #endif

@@ -4,14 +4,10 @@
 #include <jl_cycle.h>
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-#include <jlm_base.h>
-#include <jlm_limit.h>
-
-void jl_compile(JudgeLightCycle *);
-
-void jl_run(JudgeLightCycle *);
+extern JudgeLightCycle *jl_cycle;
 
 #endif

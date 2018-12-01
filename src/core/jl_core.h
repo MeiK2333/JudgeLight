@@ -7,4 +7,11 @@
 
 using namespace std;
 
+#include <jlm_base.h>
+#include <jlm_limit.h>
+
+void jl_compile(JudgeLightCycle *);
+
+void jl_run(JudgeLightCycle *);
+
 #endif

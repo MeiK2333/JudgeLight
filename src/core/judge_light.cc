@@ -29,7 +29,51 @@ void Compile();
  * */
 void Run();
 
-int main(int argc, char *argv[]) {
+int main() {
     cout << "Hello " JUDGE_LIGHT_VER << endl;
+
+    jl_cycle = new JudgeLightCycle();
+
+    /**
+     * Process Init
+     * */
+    for (auto middleware : middleware_list) {
+        middleware->ProcessInit();
+    }
+
+    /**
+     * Compile
+     * */
+    Compile();
+
+    /**
+     * Run
+     * */
+    Run();
+
     return 0;
+}
+
+void Compile() {
+    /** Compile Before */
+    for (auto middleware : middleware_list) {
+        middleware->CompileBefore();
+    }
+
+    /** Compile After */
+    for (auto middleware : middleware_list) {
+        middleware->CompileAfter();
+    }
+}
+
+void Run() {
+    /** Run Before */
+    for (auto middleware : middleware_list) {
+        middleware->RunBefore();
+    }
+
+    /** Run After */
+    for (auto middleware : middleware_list) {
+        middleware->RunAfter();
+    }
 }

@@ -13,7 +13,8 @@ CORE_DEPS = src/core/judge_light.h \
 	src/core/jl_core.h \
 	src/core/jl_cycle.h \
 	src/core/jl_data.h \
-	src/middleware/jlm_limit.h
+	src/middleware/jlm_limit.h \
+	src/middleware/jlm_parser.h
 
 
 build: judge_light
@@ -23,14 +24,16 @@ judge_light: src/core/judge_light.o \
 	src/core/jl_core.o \
 	src/core/jl_cycle.o \
 	src/core/jl_data.o \
-	src/middleware/jlm_limit.o
+	src/middleware/jlm_limit.o \
+	src/middleware/jlm_parser.o
 
 	$(link) -o judge_light \
 	src/core/judge_light.o \
 	src/core/jl_core.o \
 	src/core/jl_cycle.o \
 	src/core/jl_data.o \
-	src/middleware/jlm_limit.o
+	src/middleware/jlm_limit.o \
+	src/middleware/jlm_parser.o
 
 
 src/core/judge_light.o: $(CORE_DEPS) \
@@ -64,6 +67,12 @@ src/middleware/jlm_limit.o: $(CORE_DEPS) \
 	$(gcc11) $(ALL_INCS) \
 	-o src/middleware/jlm_limit.o \
 	src/middleware/jlm_limit.cc
+
+src/middleware/jlm_parser.o: $(CORE_DEPS) \
+	src/middleware/jlm_parser.cc
+	$(gcc11) $(ALL_INCS) \
+	-o src/middleware/jlm_parser.o \
+	src/middleware/jlm_parser.cc
 
 clean:
 	rm -rf src/core/*.o

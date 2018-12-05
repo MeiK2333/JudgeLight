@@ -1,5 +1,5 @@
-#ifndef JL_LIMIT_H
-#define JL_LIMIT_H
+#ifndef JLM_LIMIT_H
+#define JLM_LIMIT_H
 
 #include <jlm_base.h>
 #include <iostream>

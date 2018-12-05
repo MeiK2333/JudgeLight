@@ -1,5 +1,6 @@
 #include <jl_core.h>
 #include <jlm_limit.h>
+#include <jlm_parser.h>
 #include <judge_light.h>
 
 /**
@@ -8,6 +9,7 @@
  * */
 static auto middleware_list = []() {
     vector<BaseMiddleware *> _ = {
+        (BaseMiddleware *)new ParserMiddleware(),
         (BaseMiddleware *)new LimitMiddleware(),
     };
     return _;

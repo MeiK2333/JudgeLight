@@ -28,6 +28,7 @@ void Compile();
  * 完成运行相关操作的函数
  * */
 void Run();
+void RunOne(int);
 
 int main() {
     cout << "Hello " JUDGE_LIGHT_VER << endl;
@@ -67,6 +68,22 @@ void Compile() {
 }
 
 void Run() {
+    /** All Run Before */
+    for (auto middleware : middleware_list) {
+        middleware->AllRunBefore();
+    }
+
+    for (int i = 0; i < jl_cycle->run_count; i++) {
+        RunOne(i);
+    }
+
+    /** All Run After */
+    for (auto middleware : middleware_list) {
+        middleware->AllRunAfter();
+    }
+}
+
+void RunOne(int cnt) {
     /** Run Before */
     for (auto middleware : middleware_list) {
         middleware->RunBefore();

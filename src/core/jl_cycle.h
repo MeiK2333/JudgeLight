@@ -6,6 +6,9 @@
 using namespace std;
 
 struct JudgeLightCycle {
+    // 3 (需要运行的次数 / 数据组数)
+    int run_count;
+
     // ["g++", "main.cc", "-o", "a.out", "--std=gnu++17", "-Wall", nullptr]
     string* compile_args;
 

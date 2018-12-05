@@ -12,6 +12,7 @@ ALL_INCS = -I src/core \
 CORE_DEPS = src/core/judge_light.h \
 	src/core/jl_core.h \
 	src/core/jl_cycle.h \
+	src/core/jl_data.h \
 	src/middleware/jlm_limit.h
 
 
@@ -21,12 +22,14 @@ build: judge_light
 judge_light: src/core/judge_light.o \
 	src/core/jl_core.o \
 	src/core/jl_cycle.o \
+	src/core/jl_data.o \
 	src/middleware/jlm_limit.o
 
 	$(link) -o judge_light \
 	src/core/judge_light.o \
 	src/core/jl_core.o \
 	src/core/jl_cycle.o \
+	src/core/jl_data.o \
 	src/middleware/jlm_limit.o
 
 
@@ -49,6 +52,12 @@ src/core/jl_cycle.o: $(CORE_DEPS) \
 	$(gcc11) $(ALL_INCS) \
 	-o src/core/jl_cycle.o \
 	src/core/jl_cycle.cc
+
+src/core/jl_data.o: $(CORE_DEPS) \
+	src/core/jl_data.cc
+	$(gcc11) $(ALL_INCS) \
+	-o src/core/jl_data.o \
+	src/core/jl_data.cc
 
 src/middleware/jlm_limit.o: $(CORE_DEPS) \
 	src/middleware/jlm_limit.cc

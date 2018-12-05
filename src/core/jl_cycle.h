@@ -1,6 +1,7 @@
 #ifndef JL_CYCLE_H
 #define JL_CYCLE_H
 
+#include <jl_data.h>
 #include <string>
 
 using namespace std;
@@ -21,11 +22,7 @@ struct JudgeLightCycle {
     // ["./a.out", nullptr]
     string* exec_args;
 
-    // "/path/to/data/1.in"
-    string input_filepath;
-
-    // "/path/to/data/1.out"
-    string output_filepath;
+    JudgeLightData* datas;
 
     // 1000(ms)
     int time_limit;

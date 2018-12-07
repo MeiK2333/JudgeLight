@@ -2,6 +2,7 @@
 #include <jlm_limit.h>
 #include <jlm_parser.h>
 #include <judge_light.h>
+#include <unistd.h>
 
 /**
  * Middleware
@@ -63,6 +64,29 @@ void Compile() {
         middleware->CompileBefore();
     }
 
+    pid_t pid;
+
+    if ((pid = fork()) < 0) {
+    } else if (pid == 0) {  // child
+        /** Compile Child */
+        for (auto middleware : middleware_list) {
+            middleware->CompileChild();
+        }
+
+        // TODO
+        // exec...
+        exit(0);  // You will never arrive here
+
+    } else {  // parent
+        /** Compile Parent */
+        for (auto middleware : middleware_list) {
+            middleware->CompileParent();
+        }
+
+        // TODO
+        // waitpid...
+    }
+
     /** Compile After */
     for (auto middleware : middleware_list) {
         middleware->CompileAfter();
@@ -89,6 +113,29 @@ void RunOne(int cnt) {
     /** Run Before */
     for (auto middleware : middleware_list) {
         middleware->RunBefore();
+    }
+
+    pid_t pid;
+
+    if ((pid = fork()) < 0) {
+    } else if (pid == 0) {  // child
+        /** Run Child */
+        for (auto middleware : middleware_list) {
+            middleware->RunChild();
+        }
+
+        // TODO
+        // exec...
+        exit(0);  // You will never arrive here
+
+    } else {  // parent
+        /** Run Parent */
+        for (auto middleware : middleware_list) {
+            middleware->RunParent();
+        }
+
+        // TODO
+        // waitpid...
     }
 
     /** Run After */

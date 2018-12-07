@@ -41,6 +41,9 @@ class JudgeLightCycle {
     // 65535(kb)
     int memory_limit;
 
+    // 程序退出对应的状态码
+    int exit_code;
+
    public:  // function
     void PushData(JudgeLightData*);
 };

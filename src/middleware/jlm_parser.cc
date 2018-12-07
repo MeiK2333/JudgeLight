@@ -66,3 +66,5 @@ void ParserMiddleware::ProcessInit() {
         }
     }
 }
+
+void ParserMiddleware::ProcessExit() {}

@@ -38,24 +38,19 @@ int main() {
 
     jl_cycle = new JudgeLightCycle();
 
-    /**
-     * Process Init
-     * */
+    /** Process Init */
     for (auto middleware : middleware_list) {
         middleware->ProcessInit();
     }
 
-    /**
-     * Compile
-     * */
+    /** Compile */
     Compile();
 
-    /**
-     * Run
-     * */
+    /** Run */
     Run();
 
-    return 0;
+    /** Process Exit */
+    Exit(0);
 }
 
 void Compile() {
@@ -142,4 +137,13 @@ void RunOne(int cnt) {
     for (auto middleware : middleware_list) {
         middleware->RunAfter();
     }
+}
+
+void Exit(int exit_code) {
+    /** Process Exit */
+    for (auto middleware : middleware_list) {
+        middleware->ProcessExit();
+    }
+    // 拜拜了您内
+    exit(exit_code);
 }

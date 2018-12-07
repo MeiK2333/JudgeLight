@@ -10,4 +10,9 @@ using namespace std;
 
 extern JudgeLightCycle *jl_cycle;
 
+/**
+ * GG 时跑路的函数
+ * */
+void Exit(int);
+
 #endif

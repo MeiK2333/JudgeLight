@@ -6,7 +6,14 @@
 
 using namespace std;
 
-struct JudgeLightCycle {
+class JudgeLightCycle {
+   public:  // data
+    // "print('Hello World!')\n"
+    string code;
+
+    // 22
+    int code_length;
+
     // 3 (需要运行的次数 / 数据组数)
     int run_count;
 
@@ -22,6 +29,7 @@ struct JudgeLightCycle {
     // ["./a.out", nullptr]
     string* exec_args;
 
+    // data1 -> data2 -> data3 -> nullptr
     JudgeLightData* datas;
 
     // 1000(ms)
@@ -29,6 +37,9 @@ struct JudgeLightCycle {
 
     // 65535(kb)
     int memory_limit;
+
+   public:  // function
+    void PushData(JudgeLightData*);
 };
 
 #endif

@@ -7,4 +7,16 @@ class ParserMiddleware : BaseMiddleware {
     void ProcessInit();
 };
 
+enum ParserStringCode {
+    TimeLimitCode,
+    MemoryLimitCode,
+    DataCode,
+    CodeCode,
+    CodeLengthCode,
+    DoneCode,
+    PassCode,
+};
+
+ParserStringCode Hashit(string const&);
+
 #endif

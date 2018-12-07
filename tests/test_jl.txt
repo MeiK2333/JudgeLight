@@ -1,0 +1,23 @@
+time_limit
+1000
+memory_limit
+65535
+data
+/path/to/data1.in
+/path/to/data1.out
+data
+/path/to/data2.in
+/path/to/data2.out
+data
+/path/to/data3.in
+/path/to/data3.out
+code_length
+107
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello World!" << endl;
+    return 0;
+}

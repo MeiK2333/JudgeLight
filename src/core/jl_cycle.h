@@ -17,6 +17,9 @@ class JudgeLightCycle {
     // 3 (需要运行的次数 / 数据组数)
     int run_count;
 
+    // "main.cpp"
+    string filename;
+
     // ["g++", "main.cc", "-o", "a.out", "--std=gnu++17", "-Wall", nullptr]
     string* compile_args;
 
@@ -27,7 +30,7 @@ class JudgeLightCycle {
     int compile_memory_limit;
 
     // ["./a.out", nullptr]
-    string* exec_args;
+    string* run_args;
 
     // data1 -> data2 -> data3 -> nullptr
     JudgeLightData* datas;

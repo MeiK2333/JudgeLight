@@ -12,6 +12,9 @@ ParserStringCode Hashit(string const& in) {
     if (in == "code") return CodeCode;
     if (in == "code_length") return CodeLengthCode;
     if (in == "data") return DataCode;
+    if (in == "filename") return FilenameCode;
+    if (in == "compile_args") return CompileArgsCode;
+    if (in == "run_args") return RunArgsCode;
     if (in == "done") return DoneCode;
     return PassCode;
 }
@@ -50,6 +53,11 @@ void ParserMiddleware::ProcessInit() {
                 delete[] code_buffer;
                 break;
             }
+            case FilenameCode:
+                cin >> jl_cycle->filename;
+                break;
+            case CompileArgsCode:
+            case RunArgsCode:
             case DoneCode:
                 has_next = false;
                 break;

@@ -13,6 +13,9 @@ enum ParserStringCode {
     DataCode,
     CodeCode,
     CodeLengthCode,
+    FilenameCode,
+    CompileArgsCode,
+    RunArgsCode,
     DoneCode,
     PassCode,
 };

@@ -2,6 +2,7 @@
 #define JL_CORE_H
 
 #include <jl_cycle.h>
+#include <jl_errno.h>
 #include <jlm_base.h>
 #include <iostream>
 #include <string>

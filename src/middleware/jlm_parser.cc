@@ -16,7 +16,7 @@ ParserStringCode Hashit(string const& in) {
     if (in == "compile_args") return CompileArgsCode;
     if (in == "run_args") return RunArgsCode;
     if (in == "done") return DoneCode;
-    return PassCode;
+    return UnknownCode;
 }
 
 void ParserMiddleware::ProcessInit() {
@@ -61,10 +61,9 @@ void ParserMiddleware::ProcessInit() {
             case DoneCode:
                 has_next = false;
                 break;
-            case PassCode:
+            case UnknownCode:
+                Exit(PARSER_UNKNOWN_ARGS);
                 break;
         }
     }
 }
-
-void ParserMiddleware::ProcessExit() { cout << "我好了，你呢" << endl; }

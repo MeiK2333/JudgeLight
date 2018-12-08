@@ -47,7 +47,7 @@ int main() {
     Run();
 
     /** Process Exit */
-    Exit(0);
+    Exit(SUCCESS);
 }
 
 void Compile() {
@@ -59,6 +59,7 @@ void Compile() {
     pid_t pid;
 
     if ((pid = fork()) < 0) {
+        Exit(COMPILE_FORK_ERROR);
     } else if (pid == 0) {  // child
         /** Compile Child */
         for (auto middleware : middleware_list) {
@@ -110,6 +111,7 @@ void RunOne(int cnt) {
     pid_t pid;
 
     if ((pid = fork()) < 0) {
+        Exit(RUN_FORK_ERROR);
     } else if (pid == 0) {  // child
         /** Run Child */
         for (auto middleware : middleware_list) {

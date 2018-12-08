@@ -1,6 +1,7 @@
 #ifndef JLM_PARSER_H
 #define JLM_PARSER_H
 
+#include <jl_errno.h>
 #include <jlm_base.h>
 
 class ParserMiddleware : BaseMiddleware {
@@ -18,7 +19,7 @@ enum ParserStringCode {
     CompileArgsCode,
     RunArgsCode,
     DoneCode,
-    PassCode,
+    UnknownCode,
 };
 
 ParserStringCode Hashit(string const&);

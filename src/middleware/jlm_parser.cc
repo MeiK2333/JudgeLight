@@ -67,4 +67,4 @@ void ParserMiddleware::ProcessInit() {
     }
 }
 
-void ParserMiddleware::ProcessExit() {}
+void ParserMiddleware::ProcessExit() { cout << "我好了，你呢" << endl; }

@@ -4,21 +4,10 @@
 #include <judge_light.h>
 #include <unistd.h>
 
-/**
- * Middleware
- * 扩展的功能需要在这里注册
- * */
-static auto middleware_list = []() {
-    vector<BaseMiddleware *> _ = {
-        (BaseMiddleware *)new ParserMiddleware(),
-        (BaseMiddleware *)new LimitMiddleware(),
-    };
-    return _;
-}();
+vector<BaseMiddleware *> middleware_list;
 
 /**
  * 保存配置与状态的变量
- * 全局唯一的变量，也是唯一的全局变量
  * */
 JudgeLightCycle *jl_cycle;
 
@@ -35,6 +24,14 @@ void RunOne(int);
 
 int main() {
     cout << "Hello " JUDGE_LIGHT_VER << endl;
+
+    /**
+     * 将扩展的功能添加到此处
+     * */
+    middleware_list = {
+        (BaseMiddleware *)new ParserMiddleware(),
+        (BaseMiddleware *)new LimitMiddleware(),
+    };
 
     jl_cycle = new JudgeLightCycle();
 
@@ -137,13 +134,4 @@ void RunOne(int cnt) {
     for (auto middleware : middleware_list) {
         middleware->RunAfter();
     }
-}
-
-void Exit(int exit_code) {
-    /** Process Exit */
-    for (auto middleware : middleware_list) {
-        middleware->ProcessExit();
-    }
-    // 拜拜了您内
-    exit(exit_code);
 }

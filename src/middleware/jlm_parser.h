@@ -6,7 +6,6 @@
 
 class ParserMiddleware : BaseMiddleware {
     void ProcessInit();
-    void ProcessExit();
 };
 
 enum ParserStringCode {

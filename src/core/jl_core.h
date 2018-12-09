@@ -4,6 +4,8 @@
 #include <jl_cycle.h>
 #include <jl_errno.h>
 #include <jlm_base.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
 #include <iostream>
 #include <string>
 #include <vector>

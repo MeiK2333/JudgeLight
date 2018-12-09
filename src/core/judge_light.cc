@@ -76,8 +76,17 @@ void Compile() {
             middleware->CompileParent();
         }
 
-        // TODO
-        // waitpid...
+        /** 等待子进程结束并获得资源占用 */
+        struct rusage ru;
+        int status;
+        if (wait4(pid, &status, 0, &ru) == -1) {
+            Exit(COMPILE_WAIT_ERROR);
+        }
+
+        /** Compile Result */
+        for (auto middleware : middleware_list) {
+            middleware->CompileResult(ru, status);
+        }
     }
 
     /** Compile After */
@@ -128,8 +137,16 @@ void RunOne(int cnt) {
             middleware->RunParent();
         }
 
-        // TODO
-        // waitpid...
+        struct rusage ru;
+        int status;
+        if (wait4(pid, &status, 0, &ru) == -1) {
+            Exit(RUN_WAIT_ERROR);
+        }
+
+        /** Run Result */
+        for (auto middleware : middleware_list) {
+            middleware->RunResult(ru, status);
+        }
     }
 
     /** Run After */

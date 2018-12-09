@@ -66,8 +66,9 @@ void Compile() {
             middleware->CompileChild();
         }
 
-        // TODO
-        // exec...
+        execvp(jl_cycle->compile_args[0],
+               (char *const *)jl_cycle->compile_args);
+
         exit(0);  // You will never arrive here
 
     } else {  // parent
@@ -127,8 +128,8 @@ void RunOne(int cnt) {
             middleware->RunChild();
         }
 
-        // TODO
-        // exec...
+        execvp(jl_cycle->run_args[0], (char *const *)jl_cycle->run_args);
+
         exit(0);  // You will never arrive here
 
     } else {  // parent

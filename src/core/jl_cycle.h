@@ -21,7 +21,7 @@ class JudgeLightCycle {
     string filename;
 
     // ["g++", "main.cc", "-o", "a.out", "--std=gnu++17", "-Wall", nullptr]
-    string* compile_args;
+    char** compile_args;
 
     // 5000(ms)
     int compile_time_limit;
@@ -30,7 +30,7 @@ class JudgeLightCycle {
     int compile_memory_limit;
 
     // ["./a.out", nullptr]
-    string* run_args;
+    char** run_args;
 
     // data1 -> data2 -> data3 -> nullptr
     JudgeLightData* datas;

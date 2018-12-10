@@ -10,4 +10,6 @@ void JudgeLightCycle::PushData(JudgeLightData* data) {
         head = head->next;
     }
     head->next = data;
+
+    this->run_count++;
 }

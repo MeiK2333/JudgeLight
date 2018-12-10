@@ -2,6 +2,8 @@
 #include <jl_data.h>
 #include <jlm_parser.h>
 #include <iostream>
+#include <iterator>
+#include <sstream>
 #include <string>
 
 using namespace std;
@@ -56,8 +58,44 @@ void ParserMiddleware::ProcessInit() {
             case FilenameCode:
                 cin >> jl_cycle->filename;
                 break;
-            case CompileArgsCode:
-            case RunArgsCode:
+            case CompileArgsCode: {
+                string temp_args;
+                getline(cin, temp_args);  // 消除行末的回车符
+                getline(cin, temp_args);
+
+                // 以空格分割字符串
+                istringstream iss(temp_args);
+                vector<string> results((istream_iterator<string>(iss)),
+                                       istream_iterator<string>());
+
+                // 依次将字符串赋值给配置
+                int i, len = results.size();
+                jl_cycle->compile_args = new const char*[len + 1];
+                for (i = 0; i < len; i++) {
+                    jl_cycle->compile_args[i] = results[i].c_str();
+                }
+                jl_cycle->compile_args[i] = nullptr;
+
+                break;
+            }
+            case RunArgsCode: {
+                string temp_args;
+                getline(cin, temp_args);  // 消除行末的回车符
+                getline(cin, temp_args);
+
+                istringstream iss(temp_args);
+                vector<string> results((istream_iterator<string>(iss)),
+                                       istream_iterator<string>());
+
+                int i, len = results.size();
+                jl_cycle->run_args = new const char*[len + 1];
+                for (i = 0; i < len; i++) {
+                    jl_cycle->run_args[i] = results[i].c_str();
+                }
+                jl_cycle->run_args[i] = nullptr;
+
+                break;
+            }
             case DoneCode:
                 has_next = false;
                 break;

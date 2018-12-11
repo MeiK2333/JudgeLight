@@ -118,7 +118,7 @@ void Run() {
 void RunOne(int cnt) {
     /** Run Before */
     for (auto middleware : middleware_list) {
-        middleware->RunBefore();
+        middleware->RunBefore(cnt);
     }
 
     pid_t pid;
@@ -128,7 +128,7 @@ void RunOne(int cnt) {
     } else if (pid == 0) {  // child
         /** Run Child */
         for (auto middleware : middleware_list) {
-            middleware->RunChild();
+            middleware->RunChild(cnt);
         }
 
         execvp(jl_cycle->run_args[0], (char *const *)jl_cycle->run_args);
@@ -138,7 +138,7 @@ void RunOne(int cnt) {
     } else {  // parent
         /** Run Parent */
         for (auto middleware : middleware_list) {
-            middleware->RunParent();
+            middleware->RunParent(cnt);
         }
 
         struct rusage ru;
@@ -149,12 +149,12 @@ void RunOne(int cnt) {
 
         /** Run Result */
         for (auto middleware : middleware_list) {
-            middleware->RunResult(ru, status);
+            middleware->RunResult(cnt, ru, status);
         }
     }
 
     /** Run After */
     for (auto middleware : middleware_list) {
-        middleware->RunAfter();
+        middleware->RunAfter(cnt);
     }
 }

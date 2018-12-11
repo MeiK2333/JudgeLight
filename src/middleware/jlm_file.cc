@@ -1,6 +1,7 @@
 #include <dirent.h>
 #include <jl_core.h>
 #include <jlm_file.h>
+#include <fstream>
 
 void FileMiddleware::ProcessInit() {
     JudgeLightData *cur = jl_cycle->datas;
@@ -50,6 +51,11 @@ void FileMiddleware::ProcessInit() {
     if (chdir(jl_cycle->temp_dir) != 0) {
         Exit(FILE_CHDIR_ERROR);
     }
+
+    /** 将代码写入文件 */
+    ofstream out(jl_cycle->filename);
+    out << jl_cycle->code;
+    out.close();
 }
 
 void FileMiddleware::ProcessExit() {

@@ -16,14 +16,14 @@ class BaseMiddleware {
     virtual void CompileAfter(){};  // 编译结束后执行
 
     virtual void AllRunBefore(){};  // 运行之前执行
-    virtual void RunBefore(){};     // 每组运行前执行
-    virtual void RunChild(){};
-    virtual void RunParent(){};
-    virtual void RunResult(struct rusage &, int &){};
-    virtual void RunAfter(){};
+    virtual void RunBefore(int){};  // 每组运行前执行
+    virtual void RunChild(int){};
+    virtual void RunParent(int){};
+    virtual void RunResult(int, struct rusage &, int &){};
+    virtual void RunAfter(int){};
     virtual void AllRunAfter(){};  // 所有组运行结束后执行
 
-    virtual void ProcessExit(){};  // 程序退出（Exit）时执行，绝不能在这个函数内调用 Exit
+    virtual void ProcessExit(){};  // 程序退出（Exit）时执行
 };
 
 #endif

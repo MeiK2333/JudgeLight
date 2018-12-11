@@ -57,7 +57,9 @@ void ParserMiddleware::ProcessInit() {
             case CodeCode: {
                 char* code_buffer = new char[jl_cycle->code_length + 1];
                 char ch;
-                cin.get(ch);  // 清除行尾换行
+                do {
+                    cin.get(ch);
+                } while (ch == '\r');  // 清除行尾换行
                 int cur = 0;
                 while (cur < jl_cycle->code_length) {
                     cin.get(code_buffer[cur++]);

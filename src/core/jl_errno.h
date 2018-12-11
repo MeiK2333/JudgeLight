@@ -9,6 +9,7 @@ enum JudgeLightErrno {
     FILE_NOT_PERMISSION_ERROR,   // 文件无权限
     FILE_CREATE_DIR_ERROR,       // 创建文件夹失败
     FILE_CHDIR_ERROR,            // 切换工作目录失败
+    FILE_CREATE_ERROR,           // 创建文件失败
 
     COMPILE_INIT_ERROR = 200,
     COMPILE_FORK_ERROR,

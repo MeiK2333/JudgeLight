@@ -23,7 +23,7 @@ class BaseMiddleware {
     virtual void RunAfter(){};
     virtual void AllRunAfter(){};  // 所有组运行结束后执行
 
-    virtual void ProcessExit(){};  // 程序退出（Exit）时执行
+    virtual void ProcessExit(){};  // 程序退出（Exit）时执行，绝不能在这个函数内调用 Exit
 };
 
 #endif

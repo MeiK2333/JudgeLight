@@ -5,8 +5,10 @@ enum JudgeLightErrno {
     SUCCESS = 0,
     INIT_ERROR,
 
-    FILE_NOT_FOUND_ERROR = 100,
-    FILE_NOT_PERMISSION_ERROR,
+    FILE_NOT_FOUND_ERROR = 100,  // 文件未找到
+    FILE_NOT_PERMISSION_ERROR,   // 文件无权限
+    FILE_CREATE_DIR_ERROR,       // 创建文件夹失败
+    FILE_CHDIR_ERROR,            // 切换工作目录失败
 
     COMPILE_INIT_ERROR = 200,
     COMPILE_FORK_ERROR,

@@ -20,6 +20,9 @@ class JudgeLightCycle {
     // "main.cpp"
     string filename;
 
+    // 运行时的临时目录
+    char * temp_dir;
+
     // ["g++", "main.cc", "-o", "a.out", "--std=gnu++17", "-Wall", nullptr]
     char** compile_args;
 

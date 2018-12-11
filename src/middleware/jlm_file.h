@@ -6,6 +6,9 @@
 class FileMiddleware : BaseMiddleware {
    public:
     void ProcessInit();
+    void ProcessExit();
 };
+
+int remove_dir(const char *);
 
 #endif

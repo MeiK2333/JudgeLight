@@ -6,6 +6,7 @@
 class FileMiddleware : BaseMiddleware {
    public:
     void ProcessInit();
+    void RunChild(int);
     void ProcessExit();
 };
 

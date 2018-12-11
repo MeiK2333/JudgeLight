@@ -1,6 +1,7 @@
 #include <dirent.h>
 #include <jl_core.h>
 #include <jlm_file.h>
+#include <stdio.h>
 #include <fstream>
 
 void FileMiddleware::ProcessInit() {
@@ -57,6 +58,20 @@ void FileMiddleware::ProcessInit() {
     out << jl_cycle->code;
     out.close();
 }
+
+void FileMiddleware::RunChild(int cnt) {
+    JudgeLightData *data = jl_cycle->GetData(cnt);
+
+    /** 重定向输入输出流 */
+    /** 错误返回 -1，正确返回设置的描述符的值 */
+    if (dup2(data->input_fd, STDIN_FILENO) == -1) {
+        Exit(FILE_DUP2_ERROR);
+    }
+
+    // TODO
+    // 重定向输出流
+    // 为每组创建临时文件以保存输出数据
+};
 
 void FileMiddleware::ProcessExit() {
     /** 讲道理不会出现错误（因为你刚刚过来，没理由回不去） */

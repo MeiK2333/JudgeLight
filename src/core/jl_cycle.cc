@@ -13,3 +13,15 @@ void JudgeLightCycle::PushData(JudgeLightData* data) {
 
     this->run_count++;
 }
+
+JudgeLightData* JudgeLightCycle::GetData(int cnt) {
+    JudgeLightData* cur = this->datas;
+    int cur_cnt = 0;
+    while (cur) {
+        if (cur_cnt++ == cnt) {
+            return cur;
+        }
+        cur = cur->next;
+    }
+    return nullptr;
+}

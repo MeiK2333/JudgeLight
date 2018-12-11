@@ -10,6 +10,7 @@ enum JudgeLightErrno {
     FILE_CREATE_DIR_ERROR,       // 创建文件夹失败
     FILE_CHDIR_ERROR,            // 切换工作目录失败
     FILE_CREATE_ERROR,           // 创建文件失败
+    FILE_DUP2_ERROR,             // dup2 失败（我反正没见过。。。）
 
     COMPILE_INIT_ERROR = 200,
     COMPILE_FORK_ERROR,

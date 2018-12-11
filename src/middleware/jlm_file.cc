@@ -7,6 +7,7 @@ void FileMiddleware::ProcessInit() {
     /** 检查文件 */
     JudgeLightData *cur = jl_cycle->datas;
     while (cur) {
+        cout << cur->input_filepath << endl;
         if (access(cur->input_filepath, F_OK) != 0 ||
             access(cur->output_filepath, F_OK) != 0) {  // 文件不存在
             Exit(FILE_NOT_FOUND_ERROR);

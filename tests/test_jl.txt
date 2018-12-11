@@ -9,22 +9,24 @@ g++ main.cpp -o a.out --std=gnu++17 -Wall
 run_args
 ./a.out
 data
-/path/to/data1.in
-/path/to/data1.out
+tests/data/data1.in
+tests/data/data1.out
 data
-/path/to/data2.in
-/path/to/data2.out
+tests/data/data2.in
+tests/data/data2.out
 data
-/path/to/data3.in
-/path/to/data3.out
+tests/data/data3.in
+tests/data/data3.out
 code_length
-107
+131
 code
 #include <iostream>
 using namespace std;
 
 int main() {
-    cout << "Hello World!" << endl;
+    int a, b;
+    cin >> a >> b;
+    cout << a + b << endl;
     return 0;
 }
 

@@ -1,6 +1,7 @@
 #include <jl_core.h>
 #include <jl_data.h>
 #include <jlm_parser.h>
+#include <string.h>
 #include <iostream>
 #include <iterator>
 #include <sstream>
@@ -40,10 +41,16 @@ void ParserMiddleware::ProcessInit() {
             case DataCode: {
                 JudgeLightData* data = new JudgeLightData();
                 string temp_string;
+
+                // 读入文件名并复制
                 cin >> temp_string;
-                data->input_filepath = temp_string.c_str();
+                data->input_filepath = new char[temp_string.length() + 1];
+                strcpy(data->input_filepath, temp_string.c_str());
+
                 cin >> temp_string;
-                data->output_filepath = temp_string.c_str();
+                data->output_filepath = new char[temp_string.length() + 1];
+                strcpy(data->output_filepath, temp_string.c_str());
+
                 jl_cycle->PushData(data);
                 break;
             }
@@ -78,9 +85,11 @@ void ParserMiddleware::ProcessInit() {
 
                 // 依次将字符串赋值给配置
                 int i, len = results.size();
-                jl_cycle->compile_args = new const char*[len + 1];
+                jl_cycle->compile_args = new char*[len + 1];
                 for (i = 0; i < len; i++) {
-                    jl_cycle->compile_args[i] = results[i].c_str();
+                    jl_cycle->compile_args[i] =
+                        new char[results[i].length() + 1];
+                    strcpy(jl_cycle->compile_args[i], results[i].c_str());
                 }
                 jl_cycle->compile_args[i] = nullptr;
 
@@ -96,9 +105,10 @@ void ParserMiddleware::ProcessInit() {
                                        istream_iterator<string>());
 
                 int i, len = results.size();
-                jl_cycle->run_args = new const char*[len + 1];
+                jl_cycle->run_args = new char*[len + 1];
                 for (i = 0; i < len; i++) {
-                    jl_cycle->run_args[i] = results[i].c_str();
+                    jl_cycle->run_args[i] = new char[results[i].length() + 1];
+                    strcpy(jl_cycle->run_args[i], results[i].c_str());
                 }
                 jl_cycle->run_args[i] = nullptr;
 

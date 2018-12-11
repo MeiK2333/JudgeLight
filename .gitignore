@@ -1,4 +1,3 @@
 *.o
-*.out
 .vscode
 judge_light

@@ -63,11 +63,16 @@ void FileMiddleware::ProcessExit() {
 /**
  * 递归删除非空文件夹
  * */
-int remove_dir(const char *dir) {
+void remove_dir(const char *dir) {
     char dir_name[260];
     DIR *dirp;
     struct dirent *dp;
     struct stat dir_stat;
+
+    if (stat(dir, &dir_stat) < 0) {  // 同理，不太存在自己创建的自己不能删
+        cout << "You will never arrive here" << endl;
+        return;
+    }
 
     if (S_ISREG(dir_stat.st_mode)) {  // 普通文件删除掉
         remove(dir);
@@ -84,5 +89,5 @@ int remove_dir(const char *dir) {
         closedir(dirp);
         rmdir(dir);
     }
-    return 0;
+    return;
 }

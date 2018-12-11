@@ -14,7 +14,7 @@ class JudgeLightCycle {
     // 22
     int code_length;
 
-    // 3 (需要运行的次数 / 数据组数)
+    // 2 （需要运行的次数 / 数据组数）（从 0 开始）
     int run_count;
 
     // "main.cpp"

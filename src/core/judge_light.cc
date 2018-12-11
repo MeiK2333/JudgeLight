@@ -1,4 +1,5 @@
 #include <jl_core.h>
+#include <jlm_file.h>
 #include <jlm_limit.h>
 #include <jlm_parser.h>
 #include <judge_light.h>
@@ -30,6 +31,7 @@ int main() {
      * */
     middleware_list = {
         (BaseMiddleware *)new ParserMiddleware(),
+        (BaseMiddleware *)new FileMiddleware(),
         (BaseMiddleware *)new LimitMiddleware(),
     };
 

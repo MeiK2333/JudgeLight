@@ -39,16 +39,24 @@ void ParserMiddleware::ProcessInit() {
                 break;
             case DataCode: {
                 JudgeLightData* data = new JudgeLightData();
-                cin >> data->input_filepath;
-                cin >> data->output_filepath;
+                string temp_string;
+                cin >> temp_string;
+                data->input_filepath = temp_string.c_str();
+                cin >> temp_string;
+                data->output_filepath = temp_string.c_str();
                 jl_cycle->PushData(data);
                 break;
             }
             case CodeCode: {
                 char* code_buffer = new char[jl_cycle->code_length + 1];
+                char ch;
+                cin.get(ch);  // 清除行尾换行
                 int cur = 0;
                 while (cur < jl_cycle->code_length) {
                     cin.get(code_buffer[cur++]);
+                    if (code_buffer[cur - 1] == '\r') {  // 万恶的 Windows
+                        cur--;
+                    }
                 }
                 code_buffer[cur] = '\0';
                 jl_cycle->code = code_buffer;

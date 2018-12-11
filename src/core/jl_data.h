@@ -8,10 +8,12 @@ using namespace std;
 class JudgeLightData {
    public:
     // "/path/to/data/1.in"
-    string input_filepath;
+    const char *input_filepath;
+    int input_fd;
 
     // "/path/to/data/1.out"
-    string output_filepath;
+    const char *output_filepath;
+    int output_fd;
 
     // next
     JudgeLightData *next;

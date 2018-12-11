@@ -15,6 +15,10 @@ class JudgeLightData {
     char *output_filepath;
     int output_fd;
 
+    // 用于存储程序输出的临时文件
+    char *temp_filepath;
+    int temp_fd;
+
     // next
     JudgeLightData *next;
 };

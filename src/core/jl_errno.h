@@ -7,7 +7,9 @@ enum JudgeLightErrno {
 
     FILE_NOT_FOUND_ERROR = 100,  // 文件未找到
     FILE_NOT_PERMISSION_ERROR,   // 文件无权限
+    FILE_OPEN_ERROR,             // open 打开文件错误
     FILE_CREATE_DIR_ERROR,       // 创建文件夹失败
+    FILE_CREATE_TEMP_ERROR,      // 创建临时文件失败
     FILE_CHDIR_ERROR,            // 切换工作目录失败
     FILE_CREATE_ERROR,           // 创建文件失败
     FILE_DUP2_ERROR,             // dup2 失败（我反正没见过。。。）

@@ -18,8 +18,12 @@ void FileMiddleware::ProcessInit() {
         }
 
         /** 打开文件，将描述符赋值给配置项 */
-        cur->input_fd = open(cur->input_filepath, O_RDONLY);
-        cur->output_fd = open(cur->output_filepath, O_RDONLY);
+        if ((cur->input_fd = open(cur->input_filepath, O_RDONLY)) == -1) {
+            Exit(FILE_OPEN_ERROR);
+        }
+        if ((cur->output_fd = open(cur->output_filepath, O_RDONLY)) == -1) {
+            Exit(FILE_OPEN_ERROR);
+        }
 
         cur = cur->next;
     }
@@ -68,9 +72,30 @@ void FileMiddleware::RunChild(int cnt) {
         Exit(FILE_DUP2_ERROR);
     }
 
-    // TODO
-    // 重定向输出流
-    // 为每组创建临时文件以保存输出数据
+    /** 创建临时文件："temp-XXXXXX"" */
+    data->temp_filepath = new char[12];
+    data->temp_filepath[0] = 't';
+    data->temp_filepath[1] = 'e';
+    data->temp_filepath[2] = 'm';
+    data->temp_filepath[3] = 'p';
+    data->temp_filepath[4] = '-';
+    data->temp_filepath[5] = 'X';
+    data->temp_filepath[6] = 'X';
+    data->temp_filepath[7] = 'X';
+    data->temp_filepath[8] = 'X';
+    data->temp_filepath[9] = 'X';
+    data->temp_filepath[10] = 'X';
+    data->temp_filepath[11] = '\0';
+
+    /** 创建并打开临时文件 */
+    if ((data->temp_fd = mkstemp(data->temp_filepath)) == -1) {
+        Exit(FILE_CREATE_TEMP_ERROR);
+    }
+
+    /** 重定向输出流 */
+    if (dup2(data->temp_fd, STDOUT_FILENO) == -1) {
+        Exit(FILE_DUP2_ERROR);
+    }
 };
 
 void FileMiddleware::ProcessExit() {

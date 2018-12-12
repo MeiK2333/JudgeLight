@@ -10,4 +10,6 @@ class ResultMiddleware : BaseMiddleware {
     void RunResult(int, struct rusage &, int &);
 };
 
+int DiffData(int);
+
 #endif

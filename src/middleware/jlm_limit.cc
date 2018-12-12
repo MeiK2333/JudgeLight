@@ -42,4 +42,8 @@ void LimitMiddleware::RunChild(int) {
     if (setrlimit(RLIMIT_DATA, &rl) != 0) {
         Exit(SET_LIMIT_MEMORY_ERROR);
     }
+
+    // TODO
+    // 设置最大文件输出限制
+    // 超过则 OLE
 }

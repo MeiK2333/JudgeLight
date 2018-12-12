@@ -25,7 +25,7 @@ void Run();
 void RunOne(int);
 
 int main() {
-    cout << "Hello " JUDGE_LIGHT_VER << endl;
+    cout << "version: " JUDGE_LIGHT_VER << endl;
 
     /**
      * 将扩展的功能添加到此处

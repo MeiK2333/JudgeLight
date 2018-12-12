@@ -39,7 +39,18 @@ void ResultMiddleware::RunResult(int cnt, struct rusage &ru, int &status) {
         } else if (rst.memory_used > jl_cycle->memory_limit) {
             rst.result = MemoryLimitExceeded;
         } else {
+            rst.result = DiffData(cnt);
         }
     }
     jl_cycle->results[cnt] = rst;
+}
+
+int DiffData(int) {
+    // TODO
+    // 对比输出文件和答案文件
+    // 完全相同：AC
+    // 除了末尾的换行符外完全相同：AC
+    // 除了空格、格式制表符、换行符等空白符外完全相同：PE
+    // 其他情况：WA
+    return Accepted;
 }

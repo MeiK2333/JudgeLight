@@ -17,6 +17,9 @@ class JudgeLightCycle {
     // 2 （需要运行的次数 / 数据组数）（从 0 开始）
     int run_count;
 
+    // 当 run_error 为 true 时代表运行出错，不会继续执行后续组数
+    bool run_error;
+
     // "main.cpp"
     string filename;
 

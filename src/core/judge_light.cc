@@ -105,7 +105,7 @@ void Run() {
         middleware->AllRunBefore();
     }
 
-    for (int i = 0; i <= jl_cycle->run_count; i++) {
+    for (int i = 0; !jl_cycle->run_error && i <= jl_cycle->run_count; i++) {
         RunOne(i);
     }
 

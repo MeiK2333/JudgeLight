@@ -3,12 +3,10 @@
 
 #include <jl_core.h>
 #include <jlm_base.h>
-#include <iostream>
-using namespace std;
 
 class LimitMiddleware : BaseMiddleware {
    public:
-    void RunChild();
+    void RunChild(int);
 };
 
 #endif

@@ -115,8 +115,7 @@ void remove_dir(const char *dir) {
     struct dirent *dp;
     struct stat dir_stat;
 
-    if (stat(dir, &dir_stat) < 0) {  // 同理，不太存在自己创建的自己不能删
-        cout << "You will never arrive here" << endl;
+    if (stat(dir, &dir_stat) < 0) { // 如果没能触发创建流程，则此处删除的时候也没有
         return;
     }
 

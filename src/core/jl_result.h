@@ -10,6 +10,7 @@ enum JudgeLightResultEnum {
     PresentationError = 5,
     OutputLimitExceeded = 6,
     RuntimeError = 7,
+    BanError = 8,
     SystemError = 9,
 };
 

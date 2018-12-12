@@ -29,8 +29,8 @@ enum JudgeLightErrno {
     PARSER_ERROR = 400,
     PARSER_UNKNOWN_ARGS,
 
-    LIMIT_TIME_ERROR = 500,
-    LIMIT_MEMORY_ERROR,
+    SET_LIMIT_TIME_ERROR = 500,  // 设置时间限制失败
+    SET_LIMIT_MEMORY_ERROR,      // 设置内存限制失败
 
     SYSTEM_ERROR = 900,
 };

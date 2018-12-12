@@ -2,7 +2,7 @@
 #include <sys/resource.h>
 #include <sys/time.h>
 
-void LimitMiddleware::RunChild(int cnt) {
+void LimitMiddleware::RunChild(int) {
     struct rlimit rl;
 
     /** 以秒为单位设置（CPU）运行时间限制 */
@@ -30,7 +30,7 @@ void LimitMiddleware::RunChild(int cnt) {
         Exit(SET_LIMIT_TIME_ERROR);
     }
 
-    /** 
+    /**
      * 设置内存限制
      * 内存限制比给定值放宽
      * */

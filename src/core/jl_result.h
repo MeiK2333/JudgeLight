@@ -18,6 +18,7 @@ class JudgeLightResult {
     int time_used;
     int memory_used;
     int result;
+    int signum;
 };
 
 #endif

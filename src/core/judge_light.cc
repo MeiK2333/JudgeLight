@@ -2,6 +2,7 @@
 #include <jlm_file.h>
 #include <jlm_limit.h>
 #include <jlm_parser.h>
+#include <jlm_result.h>
 #include <judge_light.h>
 #include <unistd.h>
 
@@ -33,6 +34,7 @@ int main() {
         (BaseMiddleware *)new ParserMiddleware(),
         (BaseMiddleware *)new FileMiddleware(),
         (BaseMiddleware *)new LimitMiddleware(),
+        (BaseMiddleware *)new ResultMiddleware(),
     };
 
     jl_cycle = new JudgeLightCycle();

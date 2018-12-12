@@ -2,6 +2,7 @@
 #define JL_CYCLE_H
 
 #include <jl_data.h>
+#include <jl_result.h>
 #include <string>
 
 using namespace std;
@@ -46,6 +47,8 @@ class JudgeLightCycle {
 
     // 65535(kb)
     int memory_limit;
+
+    JudgeLightResult* results;
 
     // 程序退出对应的状态码
     int exit_code;

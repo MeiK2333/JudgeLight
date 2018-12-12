@@ -9,7 +9,7 @@ void LimitMiddleware::RunChild(int cnt) {
     /** 1000 -> 2S, 1400 -> 2S, 1500 -> 3S */
     rl.rlim_cur = (jl_cycle->time_limit + 1500) / 1000;
     rl.rlim_max = rl.rlim_cur + 1;
-    if (setrlimit(RLIMIT_CPU, &rl)) {
+    if (setrlimit(RLIMIT_CPU, &rl) != 0) {
         Exit(LIMIT_TIME_ERROR);
     }
 
@@ -28,5 +28,18 @@ void LimitMiddleware::RunChild(int cnt) {
     rt.it_value.tv_usec = (int)(t % 1000) * 1000;
     if (setitimer(ITIMER_REAL, &rt, (struct itimerval *)0) != 0) {
         Exit(LIMIT_TIME_ERROR);
+    }
+
+    /** 
+     * 设置内存限制
+     * 内存限制比给定值放宽
+     * */
+    rl.rlim_cur = jl_cycle->memory_limit * 1024 * 2;
+    rl.rlim_max = rl.rlim_cur + 1024;
+    if (setrlimit(RLIMIT_AS, &rl) != 0) {
+        Exit(LIMIT_MEMORY_ERROR);
+    }
+    if (setrlimit(RLIMIT_DATA, &rl) != 0) {
+        Exit(LIMIT_MEMORY_ERROR);
     }
 }

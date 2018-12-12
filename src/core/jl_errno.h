@@ -30,6 +30,7 @@ enum JudgeLightErrno {
     PARSER_UNKNOWN_ARGS,
 
     LIMIT_TIME_ERROR = 500,
+    LIMIT_MEMORY_ERROR,
 
     SYSTEM_ERROR = 900,
 };

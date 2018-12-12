@@ -1,0 +1,6 @@
+{
+    "filename": "main.cc",
+    "compile_args": "g++ main.cc -o a.out",
+    "run_args": "./a.out",
+    "result": 0
+}

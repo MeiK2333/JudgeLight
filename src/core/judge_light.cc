@@ -40,6 +40,9 @@ int main() {
     jl_cycle = new JudgeLightCycle();
 
     /** Process Init */
+    if (DEBUG) {
+        cout << "ProcessInit" << endl;
+    }
     for (auto middleware : middleware_list) {
         middleware->ProcessInit();
     }
@@ -51,11 +54,17 @@ int main() {
     Run();
 
     /** Process Exit */
+    if (DEBUG) {
+        cout << "Success Exit" << endl;
+    }
     Exit(SUCCESS);
 }
 
 void Compile() {
     /** Compile Before */
+    if (DEBUG) {
+        cout << "CompileBefore" << endl;
+    }
     for (auto middleware : middleware_list) {
         middleware->CompileBefore();
     }
@@ -66,6 +75,9 @@ void Compile() {
         Exit(COMPILE_FORK_ERROR);
     } else if (pid == 0) {  // child
         /** Compile Child */
+        if (DEBUG) {
+            cout << "CompileChild" << endl;
+        }
         for (auto middleware : middleware_list) {
             middleware->CompileChild();
         }
@@ -78,6 +90,9 @@ void Compile() {
 
     } else {  // parent
         /** Compile Parent */
+        if (DEBUG) {
+            cout << "CompileParent" << endl;
+        }
         for (auto middleware : middleware_list) {
             middleware->CompileParent();
         }
@@ -90,12 +105,18 @@ void Compile() {
         }
 
         /** Compile Result */
+        if (DEBUG) {
+            cout << "CompileResult" << endl;
+        }
         for (auto middleware : middleware_list) {
             middleware->CompileResult(ru, status);
         }
     }
 
     /** Compile After */
+    if (DEBUG) {
+        cout << "CompileAfter" << endl;
+    }
     for (auto middleware : middleware_list) {
         middleware->CompileAfter();
     }
@@ -103,6 +124,9 @@ void Compile() {
 
 void Run() {
     /** All Run Before */
+    if (DEBUG) {
+        cout << "AllRunBefore" << endl;
+    }
     for (auto middleware : middleware_list) {
         middleware->AllRunBefore();
     }
@@ -112,6 +136,9 @@ void Run() {
     }
 
     /** All Run After */
+    if (DEBUG) {
+        cout << "AllRunAfter" << endl;
+    }
     for (auto middleware : middleware_list) {
         middleware->AllRunAfter();
     }
@@ -119,6 +146,9 @@ void Run() {
 
 void RunOne(int cnt) {
     /** Run Before */
+    if (DEBUG) {
+        cout << "RunBefore" << endl;
+    }
     for (auto middleware : middleware_list) {
         middleware->RunBefore(cnt);
     }
@@ -129,6 +159,9 @@ void RunOne(int cnt) {
         Exit(RUN_FORK_ERROR);
     } else if (pid == 0) {  // child
         /** Run Child */
+        if (DEBUG) {
+            cout << "RunChild" << endl;
+        }
         for (auto middleware : middleware_list) {
             middleware->RunChild(cnt);
         }
@@ -139,6 +172,9 @@ void RunOne(int cnt) {
 
     } else {  // parent
         /** Run Parent */
+        if (DEBUG) {
+            cout << "RunParent" << endl;
+        }
         for (auto middleware : middleware_list) {
             middleware->RunParent(cnt);
         }
@@ -150,12 +186,18 @@ void RunOne(int cnt) {
         }
 
         /** Run Result */
+        if (DEBUG) {
+            cout << "RunResult" << endl;
+        }
         for (auto middleware : middleware_list) {
             middleware->RunResult(cnt, ru, status);
         }
     }
 
     /** Run After */
+    if (DEBUG) {
+        cout << "RunAfter" << endl;
+    }
     for (auto middleware : middleware_list) {
         middleware->RunAfter(cnt);
     }

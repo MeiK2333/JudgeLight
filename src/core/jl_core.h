@@ -1,6 +1,8 @@
 #ifndef JL_CORE_H
 #define JL_CORE_H
 
+#define DEBUG true
+
 #include <fcntl.h>
 #include <jl_cycle.h>
 #include <jl_errno.h>

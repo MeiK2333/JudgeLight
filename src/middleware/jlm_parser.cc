@@ -28,6 +28,9 @@ void ParserMiddleware::ProcessInit() {
 
     while (has_next) {
         cin >> key;
+        if (DEBUG) {
+            cout << "key: " << key << endl;
+        }
         switch (Hashit(key)) {
             case TimeLimitCode:
                 cin >> jl_cycle->time_limit;

@@ -127,4 +127,7 @@ void ParserMiddleware::ProcessInit() {
                 break;
         }
     }
+    // TODO
+    // 对必需的参数进行验证
+    // 如果缺少必要参数则输出错误然后退出
 }

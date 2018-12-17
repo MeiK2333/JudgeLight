@@ -46,4 +46,12 @@ void LimitMiddleware::RunChild(int) {
     // TODO
     // 设置最大文件输出限制
     // 超过则 OLE
+
+    // TODO
+    // 通过 libseccomp 来进行系统调用的限制
+    // 从而确保评测过程安全
 }
+
+// TODO
+// 为编译过程添加资源限制
+// 以保证不会出现：编译时间超长、编译输出巨量信息、编译读取敏感信息等

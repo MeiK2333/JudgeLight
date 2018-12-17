@@ -42,8 +42,17 @@ void ResultMiddleware::RunResult(int cnt, struct rusage &ru, int &status) {
             rst.result = DiffData(cnt);
         }
     }
+    jl_cycle->run_error = rst.result != Accepted ? true : false;
     jl_cycle->results[cnt] = rst;
+
+    // TODO
+    // 输出本组数据的结果
+    // 便于实时查看进度
 }
+
+// TODO
+// 当所有数据运行结束后
+// 计算最终结果并输出
 
 int DiffData(int) {
     // TODO

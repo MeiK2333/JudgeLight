@@ -32,6 +32,8 @@ enum JudgeLightErrno {
     SET_LIMIT_TIME_ERROR = 500,  // 设置时间限制失败
     SET_LIMIT_MEMORY_ERROR,      // 设置内存限制失败
 
+    LSEEK_ERROR = 600,
+
     SYSTEM_ERROR = 900,
 };
 

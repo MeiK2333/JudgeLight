@@ -120,16 +120,32 @@ int DiffData(int cnt) {
         }
     }
 
-    // TODO
-    // 对比输出文件和答案文件
-    // 完全相同：AC
-    // 除了末尾的换行符外完全相同：AC
-    // 除了空格、格式制表符、换行符等空白符外完全相同：PE
-    // 其他情况：WA
+    /** 清理掉末尾的空白符 */
+    while (output_cur < output_end && isspace(*output_cur)) {
+        output_cur++;
+    }
+    while (temp_cur < temp_end && isspace(*temp_cur)) {
+        temp_cur++;
+    }
+
+    /** 
+     * 如果两者没有同时结束，则说明答案错误
+     * 如果从这里错误，说明两者有包含关系
+     * 如果后续需要有其他提示，可以从这里搞一下
+     * */
+    if ((output_cur != output_end) || (temp_cur != temp_end)) {
+        res = WrongAnswer;
+        goto RESULTED;
+    }
 
 RESULTED:
     munmap(temp, temp_len);
     munmap(output, output_len);
+
+    /** 如果出现 PE 且过程中没有其他错误 */
+    if (res == Accepted && pe) {
+        res = pe;
+    }
 
     return res;
 }

@@ -60,7 +60,6 @@ int DiffData(int cnt) {
     JudgeLightData *data = jl_cycle->GetData(cnt);
     off_t temp_len, output_len;
     char *temp, *output;
-    int res = Accepted;
 
     /** 计算文件大小 */
     output_len = lseek(data->output_fd, 0, SEEK_END);
@@ -88,6 +87,8 @@ int DiffData(int cnt) {
         Exit(MMAP_ERROR);
     }
 
+    int res = Accepted;
+    bool pe = false;
     const char *output_cur, *temp_cur, *output_end, *temp_end;
     output_cur = output;
     output_end = output + output_len;
@@ -95,13 +96,28 @@ int DiffData(int cnt) {
     temp_end = temp + temp_len;
 
     while ((output_cur < output_end) && (temp_cur < temp_end)) {
-        // isspace()
-        if (output_cur != temp_cur) {
-            res = WrongAnswer;
-            goto RESULTED;
+        /** 如果用户输出与答案文件在某个位置不相同 */
+        if (*output_cur != *temp_cur) {
+            bool output_space = isspace(*output_cur);
+            bool temp_space = isspace(*temp_cur);
+            /** 如果是空白符的差别，则标记为 pe，继续向下处理 */
+            if (output_space) {
+                pe = true;
+                output_cur++;
+            }
+            if (temp_space) {
+                pe = true;
+                temp_cur++;
+            }
+            /** 如果不是空白符不同，则标记为 wa，结束对比 */
+            if (!output_space && !temp_space) {
+                res = WrongAnswer;
+                goto RESULTED;
+            }
+        } else {
+            output_cur++;
+            temp_cur++;
         }
-        output_cur++;
-        temp_cur++;
     }
 
     // TODO

@@ -33,6 +33,7 @@ enum JudgeLightErrno {
     SET_LIMIT_MEMORY_ERROR,      // 设置内存限制失败
 
     LSEEK_ERROR = 600,
+    MMAP_ERROR,
 
     SYSTEM_ERROR = 900,
 };

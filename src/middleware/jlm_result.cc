@@ -1,4 +1,6 @@
+#include <ctype.h>
 #include <jlm_result.h>
+#include <sys/mman.h>
 
 void ResultMiddleware::AllRunBefore() {
     /** 为每组数据创建 result */
@@ -57,6 +59,8 @@ void ResultMiddleware::RunResult(int cnt, struct rusage &ru, int &status) {
 int DiffData(int cnt) {
     JudgeLightData *data = jl_cycle->GetData(cnt);
     off_t temp_len, output_len;
+    char *temp, *output;
+    int res = Accepted;
 
     /** 计算文件大小 */
     output_len = lseek(data->output_fd, 0, SEEK_END);
@@ -72,13 +76,44 @@ int DiffData(int cnt) {
         Exit(LSEEK_ERROR);
     }
 
-    do {
-        // TODO
-        // 对比输出文件和答案文件
-        // 完全相同：AC
-        // 除了末尾的换行符外完全相同：AC
-        // 除了空格、格式制表符、换行符等空白符外完全相同：PE
-        // 其他情况：WA
-    } while (false);
-    return Accepted;
+    /** 设置 mmap */
+    if ((output = (char *)mmap(NULL, output_len, PROT_READ | PROT_WRITE,
+                               MAP_PRIVATE, data->output_fd, 0)) ==
+        MAP_FAILED) {
+        Exit(MMAP_ERROR);
+    }
+    if ((temp = (char *)mmap(NULL, temp_len, PROT_READ | PROT_WRITE,
+                             MAP_PRIVATE, data->temp_fd, 0)) == MAP_FAILED) {
+        munmap(output, output_len);
+        Exit(MMAP_ERROR);
+    }
+
+    const char *output_cur, *temp_cur, *output_end, *temp_end;
+    output_cur = output;
+    output_end = output + output_len;
+    temp_cur = temp;
+    temp_end = temp + temp_len;
+
+    while ((output_cur < output_end) && (temp_cur < temp_end)) {
+        // isspace()
+        if (output_cur != temp_cur) {
+            res = WrongAnswer;
+            goto RESULTED;
+        }
+        output_cur++;
+        temp_cur++;
+    }
+
+    // TODO
+    // 对比输出文件和答案文件
+    // 完全相同：AC
+    // 除了末尾的换行符外完全相同：AC
+    // 除了空格、格式制表符、换行符等空白符外完全相同：PE
+    // 其他情况：WA
+
+RESULTED:
+    munmap(temp, temp_len);
+    munmap(output, output_len);
+
+    return res;
 }

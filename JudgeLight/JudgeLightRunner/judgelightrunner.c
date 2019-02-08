@@ -1,5 +1,7 @@
 #include <Python.h>
 
+#include "jl_memory.h"
+
 PyObject *run(PyObject *self, PyObject *args) {
     PyObject *stats;
     stats = Py_None;

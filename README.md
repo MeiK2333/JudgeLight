@@ -9,4 +9,4 @@
 
 - CPU 时间： `wait4`
 - 实际时间： `gettimeofday`
-- 内存占用： `ptrace` 后读取 `/proc/pid/status`
+- 内存占用： `/proc/pid/status`

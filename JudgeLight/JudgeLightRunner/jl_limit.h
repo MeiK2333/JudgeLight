@@ -5,4 +5,6 @@
 
 int SetProcessLimit(struct RunnerConfig *);
 
+int SetStream(struct RunnerConfig *);
+
 #endif

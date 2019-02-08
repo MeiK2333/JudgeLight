@@ -1,11 +1,42 @@
-#include <Python.h>
+#include "jl_convert.h"
+#include "jl_runner.h"
 
-#include "jl_memory.h"
+#include <Python.h>
+#include <stdlib.h>
 
 PyObject *run(PyObject *self, PyObject *args) {
+#define ERROR(msg)                                                             \
+    {                                                                          \
+        if (PyErr_Occurred() == NULL) PyErr_SetString(PyExc_SystemError, msg); \
+        stats = (PyObject *)NULL;                                              \
+        goto END;                                                              \
+    }
+
     PyObject *stats;
-    PyErr_SetString(PyExc_SystemError, "coding");
-    return (PyObject *)NULL;
+    if ((stats = PyDict_New()) == NULL) {
+        ERROR("PyDict_New failure!");
+    }
+
+    struct RunnerConfig rconfig;
+    struct RunnerStats rstats;
+
+    /** 解析参数 */
+    if (ParsePythonArgs(args, &rconfig) != 0) {
+        ERROR("ParsePythonArgs failure!");
+    }
+
+    /** 执行代码 */
+    if (RunIt(&rconfig, &rstats) != 0) {
+        ERROR("RunIt failure!")
+    }
+
+    /** 生成返回结果 */
+    if (GenPythonObject(&rstats, stats) != 0) {
+        ERROR("GenPythonObject failure!");
+    }
+
+END:
+    return stats;
 }
 
 /**

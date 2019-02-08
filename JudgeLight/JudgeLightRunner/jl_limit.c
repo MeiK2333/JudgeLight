@@ -3,17 +3,17 @@
 #include <Python.h>
 #include <sys/resource.h>
 
+#define ERROR(msg)                                                             \
+    {                                                                          \
+        if (PyErr_Occurred() == NULL) PyErr_SetString(PyExc_SystemError, msg); \
+        res = -1;                                                              \
+        goto END;                                                              \
+    }
+
 /**
  * 为当前进程设置资源限制
  * */
 int SetProcessLimit(struct RunnerConfig* rconfig) {
-#define ERROR(msg)                               \
-    {                                            \
-        PyErr_SetString(PyExc_SystemError, msg); \
-        res = -1;                                \
-        goto END;                                \
-    }
-
     int res = 0;
     struct rlimit rl;
 
@@ -78,4 +78,9 @@ int SetProcessLimit(struct RunnerConfig* rconfig) {
 
 END:
     return res;
+}
+
+int SetStream(struct RunnerConfig* rconfig) {
+    // TODO
+    return 0;
 }

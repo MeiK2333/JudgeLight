@@ -22,7 +22,7 @@ struct RunnerConfig {
     int uid;
     int gid;
 
-    // char ** allow_system_calls;
+    char *allow_system_calls_rule;
     char allow_exec_system_call;
 };
 
@@ -31,8 +31,11 @@ struct RunnerConfig {
  * */
 struct RunnerStats {
     int time_used;
+    int real_time_used;
     int memory_used;
     int signum;
 };
+
+int RunIt(struct RunnerConfig *, struct RunnerStats *);
 
 #endif

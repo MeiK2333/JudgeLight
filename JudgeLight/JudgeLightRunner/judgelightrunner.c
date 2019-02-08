@@ -4,8 +4,8 @@
 
 PyObject *run(PyObject *self, PyObject *args) {
     PyObject *stats;
-    stats = Py_None;
-    return stats;
+    PyErr_SetString(PyExc_SystemError, "coding");
+    return (PyObject *)NULL;
 }
 
 /**

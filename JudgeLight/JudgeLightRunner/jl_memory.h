@@ -16,6 +16,6 @@ struct MemoryStatus {
     int vm_lib;
 };
 
-struct MemoryStatus get_memory_usage(pid_t);
+int GetMemoryUsage(pid_t, struct MemoryStatus *);
 
 #endif

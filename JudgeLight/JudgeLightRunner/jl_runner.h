@@ -23,7 +23,7 @@ struct RunnerConfig {
     int gid;
 
     char *allow_system_calls_rule;
-    char allow_exec_system_call;
+    char system_calls[1024]; // TODO: 为每个系统调用号设置，0：允许， 1：禁止。
 };
 
 /**
@@ -34,6 +34,7 @@ struct RunnerStats {
     int real_time_used;
     int memory_used;
     int signum;
+    char *message;
 };
 
 int RunIt(struct RunnerConfig *, struct RunnerStats *);

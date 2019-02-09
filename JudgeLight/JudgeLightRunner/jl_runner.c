@@ -7,7 +7,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-/** 运行的主流程 */
+/**
+ * 运行的主流程
+ * */
 int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
 #define ERROR(msg)                                                             \
     {                                                                          \
@@ -28,14 +30,17 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
             ERROR("SetProcessLimit failure!");
         }
 
-        /** TODO: 设置流重定向 */
+        /** 设置流重定向 */
+        if (SetStream(rconfig) != 0) {
+            ERROR("SetStream failure!");
+        }
 
         /** 开启 ptrace 监控系统调用，在每次调用暂停时读取内存与时间占用 */
         if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) != 0) {
             ERROR("ptrace TRACEME failure!")
         }
 
-        /** TODO: 设置系统调用限制 */
+        /** TODO: exec */
     } else {  // parent
 
         /** TODO: 监控子进程系统调用，读取内存与时间占用，处理运行中的异常 */

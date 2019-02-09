@@ -3,5 +3,6 @@ class Stats(object):
         self,
         time_used,
         memory_used,
+        message,
     ):
         pass

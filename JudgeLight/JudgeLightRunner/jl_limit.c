@@ -13,7 +13,7 @@
 /**
  * 为当前进程设置资源限制
  * */
-int SetProcessLimit(struct RunnerConfig* rconfig) {
+int SetProcessLimit(struct RunnerConfig *rconfig) {
     int res = 0;
     struct rlimit rl;
 
@@ -33,7 +33,7 @@ int SetProcessLimit(struct RunnerConfig* rconfig) {
         rt.it_interval.tv_usec = 0;
         rt.it_value.tv_sec = t / 1000;
         rt.it_value.tv_usec = (int)(t % 1000) * 1000;
-        if (setitimer(ITIMER_REAL, &rt, (struct itimerval*)0) != 0) {
+        if (setitimer(ITIMER_REAL, &rt, (struct itimerval *)0) != 0) {
             ERROR("setitimer ITIMER_REAL failure!");
         }
     }
@@ -80,7 +80,44 @@ END:
     return res;
 }
 
-int SetStream(struct RunnerConfig* rconfig) {
-    // TODO
-    return 0;
+/**
+ * 为当前进程设置流重定向
+ * */
+int SetStream(struct RunnerConfig *rconfig) {
+    int res = 0;
+    /** 设置输入流 */
+    if (rconfig->input_file_path != NULL) {
+        FILE *in_file;
+        if ((in_file = fopen(rconfig->input_file_path, "r")) == NULL) {
+            ERROR("fopen in_file failure!");
+        }
+        if (dup2(fileno(in_file), STDIN_FILENO) == -1) {
+            ERROR("dup2 in_file failure!");
+        }
+    }
+
+    /** 设置输出流 */
+    if (rconfig->output_file_path != NULL) {
+        FILE *out_file;
+        if ((out_file = fopen(rconfig->output_file_path, "w")) == NULL) {
+            ERROR("fopen out_file failure!");
+        }
+        if (dup2(fileno(out_file), STDOUT_FILENO) == -1) {
+            ERROR("dup2 out_file failure!");
+        }
+    }
+
+    /** 设置 error 流 */
+    if (rconfig->error_file_path != NULL) {
+        FILE *err_file;
+        if ((err_file = fopen(rconfig->error_file_path, "w")) == NULL) {
+            ERROR("fopen err_file failure!");
+        }
+        if (dup2(fileno(err_file), STDERR_FILENO) == -1) {
+            ERROR("dup2 err_file failure!");
+        }
+    }
+
+END:
+    return res;
 }

@@ -24,7 +24,7 @@ class JudgeLight(object):
         uid=None,  # 执行的用户 id
         gid=None,  # 执行的用户组 id
         allow_system_calls_rule=None,  # 允许执行的系统调用规则（在 C 代码中定义）
-        allow_exec_system_call=False,  # 是否允许执行 exec
+        system_calls=None,  # 允许执行的系统调用号
     ):
         run_config = {}
 
@@ -59,10 +59,6 @@ class JudgeLight(object):
             if not isinstance(value, str) and value is not None:
                 raise ValueError(f'{var} must be a string')
             run_config[var] = value
-
-        if not isinstance(allow_exec_system_call, bool):
-            raise ValueError(f'allow_exec_system_call must be a bool')
-        run_config['allow_exec_system_call'] = allow_exec_system_call
 
         self.run_config = run_config
 

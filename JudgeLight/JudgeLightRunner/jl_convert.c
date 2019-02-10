@@ -163,6 +163,18 @@ int ParsePythonArgs(PyObject *args, struct RunnerConfig *rconfig) {
         rconfig->envs[len] = NULL;
     }
 
+    /** 解析是否使用 ptrace */
+    if ((py_obj = PyDict_GetItemString(pconfig, "trace")) == NULL) {
+        /** 默认使用 */
+        rconfig->trace = 1;
+    } else {
+        if (py_obj == Py_True) {
+            rconfig->trace = 1;
+        } else {
+            rconfig->trace = 0;
+        }
+    }
+
     /** 添加已有的系统调用白名单 */
     SetSyscallRules(rconfig);
 

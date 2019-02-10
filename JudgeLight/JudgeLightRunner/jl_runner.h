@@ -22,6 +22,7 @@ struct RunnerConfig {
     int uid;
     int gid;
 
+    char trace;
     char *allow_system_calls_rule;
     char system_calls[1024];
 };

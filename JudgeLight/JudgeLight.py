@@ -23,6 +23,7 @@ class JudgeLight(object):
 
         uid=None,  # 执行的用户 id
         gid=None,  # 执行的用户组 id
+        trace=True,  # 是否使用 ptrace 进行系统调用限制，如果不使用的话，同时将无法获得准确的内存使用量（偏大）
         allow_system_calls_rule=None,  # 允许执行的系统调用规则（在 C 代码中定义）
     ):
         run_config = {}
@@ -38,8 +39,13 @@ class JudgeLight(object):
         if exec_args[0] != exec_file_path:
             exec_args = [exec_file_path] + exec_args
 
+        # 未提供 envs 则使用当前的 envs
         if envs is None:
-            envs = []
+            envs = [f'{key}={os.environ[key]}' for key in os.environ]
+
+        if not isinstance(trace, bool):
+            raise ValueError(f'trace must be a bool')
+        run_config['trace'] = trace
 
         for var in str_list_vars:
             value = vars()[var]

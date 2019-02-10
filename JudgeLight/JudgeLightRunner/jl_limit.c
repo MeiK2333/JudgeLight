@@ -19,7 +19,8 @@ int SetProcessLimit(struct RunnerConfig *rconfig) {
 
     /** 设置 CPU 时间限制 */
     if (rconfig->time_limit != UNLIMITED) {
-        rl.rlim_cur = rl.rlim_max = (rlim_t)rconfig->time_limit;
+        rl.rlim_cur = rl.rlim_max =
+            (rlim_t)((rconfig->time_limit + 999) / 1000);
         if (setrlimit(RLIMIT_CPU, &rl) != 0) {
             ERROR("setrlimit RLIMIT_CPU failure!");
         }

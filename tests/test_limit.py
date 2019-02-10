@@ -27,7 +27,7 @@ int main() {
 
     def test_real_time_limit(self):
         code = '''
-#include <unistd.h>
+# include <unistd.h>
 
 int main() {
     sleep(10);
@@ -45,7 +45,7 @@ int main() {
 
     def test_output_size_limit(self):
         code = '''
-#include <stdio.h>
+# include <stdio.h>
 
 int main() {
     for (int i = 0; i < 1000000; i++) {
@@ -68,12 +68,80 @@ int main() {
         clear_it()
         os.remove('output.txt')
 
-    def test_memory_limit(self):
+    def test_16g(self):
+        # https://github.com/vijos/malicious-code/blob/master/16g.c
+        code = 'main[-1u]={1};'
+        with open('code.c', 'w') as fw:
+            fw.write(code)
+        jl = JudgeLight(
+            '/usr/bin/gcc', exec_args=['/usr/bin/gcc', 'code.c'], time_limit=5000, output_size_limit=1024000, trace=False, error_file_path='error.txt')
+        stats = jl.run()
+
+        self.assertEqual(stats['signum'], 1)
+
+        os.remove('error.txt')
+
+    def test_bigexe(self):
+        # https://github.com/vijos/malicious-code/blob/master/bigexe.c
         code = '''
 #include <stdio.h>
-#include <stdlib.h>
 
-#define MAX 2000000
+char magic[1024 * 1024 * 1024] = { '\n' };
+
+int main()
+{
+    printf("hello, world");
+    printf(magic);
+    return 0;
+}
+'''
+        with open('code.c', 'w') as fw:
+            fw.write(code)
+        jl = JudgeLight(
+            '/usr/bin/gcc', exec_args=['/usr/bin/gcc', 'code.c'], time_limit=5000, output_size_limit=1024000, trace=False, error_file_path='error.txt')
+        stats = jl.run()
+
+        self.assertEqual(stats['signum'], 1)
+
+        os.remove('error.txt')
+
+    def test_ctle(self):
+        code = '''
+#include </dev/random>
+'''
+        with open('code.c', 'w') as fw:
+            fw.write(code)
+        jl = JudgeLight(
+            '/usr/bin/gcc', exec_args=['/usr/bin/gcc', 'code.c'], time_limit=1000, real_time_limit=1000, output_size_limit=1024000, trace=False, error_file_path='error.txt')
+        stats = jl.run()
+
+        self.assertEqual(stats['re_flag'], 1)
+
+        os.remove('error.txt')
+        os.remove('code.c')
+
+    def test_ctle2(self):
+        # https://github.com/vijos/malicious-code/blob/master/ctle2.cpp
+        code = '''
+struct x struct z<x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(y,x(y><y*,x(y*w>v<y*,w,x{}
+'''
+        with open('code.c', 'w') as fw:
+            fw.write(code)
+        jl = JudgeLight(
+            '/usr/bin/gcc', exec_args=['/usr/bin/gcc', 'code.c'], time_limit=1000, real_time_limit=1000, output_size_limit=1024000, trace=False, error_file_path='error.txt')
+        stats = jl.run()
+
+        self.assertEqual(stats['signum'], 1)
+
+        os.remove('error.txt')
+        os.remove('code.c')
+
+    def test_memory_limit(self):
+        code = '''
+# include <stdio.h>
+# include <stdlib.h>
+
+# define MAX 2000000
 
 int *a[MAX];
 

@@ -24,6 +24,9 @@ int GetMemoryUsage(pid_t pid, struct MemoryStatus *ms) {
 
     /** 依次解析需要的数据 */
     while (fgets(buf, PATH_MAX - 1, fr) != NULL) {
+        if (buf[0] != 'V') {
+            continue;
+        }
         if (strncmp(buf, "VmSize:", 7) == 0) {
             sscanf(buf + 7, "%d", &ms->vm_size);
         } else if (strncmp(buf, "VmRSS:", 6) == 0) {

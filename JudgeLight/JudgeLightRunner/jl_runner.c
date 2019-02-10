@@ -130,6 +130,11 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
             ru.ru_utime.tv_sec * 1000 + ru.ru_utime.tv_usec / 1000 +
             ru.ru_stime.tv_sec * 1000 + ru.ru_stime.tv_usec / 1000;
 
+        /** 如果 ptrace 中没有获得内存占用 */
+        if (rstats->memory_used == -1) {
+            rstats->memory_used = ru.ru_maxrss;
+        }
+
         /** 获取结束信号 */
         rstats->signum = WSTOPSIG(status);
 

@@ -43,7 +43,11 @@ int SetProcessLimit(struct RunnerConfig *rconfig) {
 
     /** 设置内存限制 */
     if (rconfig->memory_limit != UNLIMITED) {
-        rl.rlim_cur = rl.rlim_max = (rlim_t)rconfig->memory_limit;
+        rl.rlim_cur = rl.rlim_max = (rlim_t)rconfig->memory_limit * 1024;
+        if (setrlimit(RLIMIT_DATA, &rl) != 0) {
+            ERROR("setrlimit RLIMIT_DATA failure!");
+        }
+        rl.rlim_cur = rl.rlim_max = (rlim_t)rconfig->memory_limit * 1024 * 2;
         if (setrlimit(RLIMIT_AS, &rl) != 0) {
             ERROR("setrlimit RLIMIT_AS failure!");
         }

@@ -18,7 +18,7 @@ int SetProcessLimit(struct RunnerConfig *rconfig) {
     struct rlimit rl;
 
     /** 设置 CPU 时间限制 */
-    if (rconfig->time_limit) {
+    if (rconfig->time_limit != UNLIMITED) {
         rl.rlim_cur = rl.rlim_max = (rlim_t)rconfig->time_limit;
         if (setrlimit(RLIMIT_CPU, &rl) != 0) {
             ERROR("setrlimit RLIMIT_CPU failure!");
@@ -26,7 +26,7 @@ int SetProcessLimit(struct RunnerConfig *rconfig) {
     }
 
     /** 设置实际时间限制 */
-    if (rconfig->real_time_limit) {
+    if (rconfig->real_time_limit != UNLIMITED) {
         struct itimerval rt;
         long t = rconfig->real_time_limit;
         rt.it_interval.tv_sec = 0;
@@ -39,7 +39,7 @@ int SetProcessLimit(struct RunnerConfig *rconfig) {
     }
 
     /** 设置内存限制 */
-    if (rconfig->memory_limit) {
+    if (rconfig->memory_limit != UNLIMITED) {
         rl.rlim_cur = rl.rlim_max = (rlim_t)rconfig->memory_limit;
         if (setrlimit(RLIMIT_AS, &rl) != 0) {
             ERROR("setrlimit RLIMIT_AS failure!");
@@ -47,7 +47,7 @@ int SetProcessLimit(struct RunnerConfig *rconfig) {
     }
 
     /** 设置栈限制 */
-    if (rconfig->stack_limit) {
+    if (rconfig->stack_limit != UNLIMITED) {
         rl.rlim_cur = rl.rlim_max = (rlim_t)rconfig->stack_limit;
         if (setrlimit(RLIMIT_STACK, &rl) != 0) {
             ERROR("setrlimit RLIMIT_STACK failure!");
@@ -55,7 +55,7 @@ int SetProcessLimit(struct RunnerConfig *rconfig) {
     }
 
     /** 设置最大输出文件大小 */
-    if (rconfig->output_size_limit) {
+    if (rconfig->output_size_limit != UNLIMITED) {
         rl.rlim_cur = rl.rlim_max = (rlim_t)rconfig->output_size_limit;
         if (setrlimit(RLIMIT_FSIZE, &rl) != 0) {
             ERROR("setrlimit RLIMIT_FSIZE failure!");
@@ -63,14 +63,14 @@ int SetProcessLimit(struct RunnerConfig *rconfig) {
     }
 
     /** 设置 gid */
-    if (rconfig->gid) {
+    if (rconfig->gid != UNLIMITED) {
         if (setgid(rconfig->gid) == -1) {
             ERROR("setgid failure!");
         }
     }
 
     /** 设置 uid */
-    if (rconfig->uid) {
+    if (rconfig->uid != UNLIMITED) {
         if (setuid(rconfig->uid) == -1) {
             ERROR("setuid failure!");
         }

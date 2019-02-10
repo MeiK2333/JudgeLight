@@ -2,7 +2,10 @@
 #include "jl_runner.h"
 
 #include <Python.h>
+#include <stdio.h>
 #include <stdlib.h>
+
+// #define DEBUG
 
 PyObject *run(PyObject *self, PyObject *args) {
 #define ERROR(msg)                                                             \
@@ -36,6 +39,11 @@ PyObject *run(PyObject *self, PyObject *args) {
     }
 
 END:
+
+#ifdef DEBUG
+    printf("errno: %d\n", errno);
+#endif
+
     return stats;
 }
 

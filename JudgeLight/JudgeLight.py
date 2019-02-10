@@ -24,7 +24,6 @@ class JudgeLight(object):
         uid=None,  # 执行的用户 id
         gid=None,  # 执行的用户组 id
         allow_system_calls_rule=None,  # 允许执行的系统调用规则（在 C 代码中定义）
-        system_calls=None,  # 允许执行的系统调用号
     ):
         run_config = {}
 
@@ -35,28 +34,37 @@ class JudgeLight(object):
                     'output_file_path', 'error_file_path', 'allow_system_calls_rule']
 
         if exec_args is None:
-            exec_args = []
+            exec_args = [exec_file_path]
+        if exec_args[0] != exec_file_path:
+            exec_args = [exec_file_path] + exec_args
+
         if envs is None:
             envs = []
 
         for var in str_list_vars:
             value = vars()[var]
+            if value is None:
+                continue
             if not isinstance(value, list):
                 raise ValueError(f'{var} must be a list')
             for item in value:
-                if not isinstance(item, str) and value is not None:
+                if not isinstance(item, str):
                     raise ValueError(f'{var} item must be a string')
             run_config[var] = value
 
         for var in int_vars:
             value = vars()[var]
-            if not isinstance(value, int) and value is not None:
+            if value is None:
+                continue
+            if not isinstance(value, int):
                 raise ValueError(f'{var} must be a int')
             run_config[var] = value
 
         for var in str_vars:
             value = vars()[var]
-            if not isinstance(value, str) and value is not None:
+            if value is None:
+                continue
+            if not isinstance(value, str):
                 raise ValueError(f'{var} must be a string')
             run_config[var] = value
 

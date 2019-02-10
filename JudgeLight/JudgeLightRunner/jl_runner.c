@@ -36,14 +36,18 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
         }
 
         /** 开启 ptrace 监控系统调用，在每次调用暂停时读取内存与时间占用 */
-        if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) != 0) {
-            ERROR("ptrace TRACEME failure!")
-        }
+        // if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) != 0) {
+        //     ERROR("ptrace TRACEME failure!")
+        // }
 
-        /** TODO: exec */
+        /** 开始执行待评测程序 */
+        execve(rconfig->exec_file_path, rconfig->exec_args, rconfig->envs);
+
+        ERROR("execve failure!");
     } else {  // parent
 
         /** TODO: 监控子进程系统调用，读取内存与时间占用，处理运行中的异常 */
+        sleep(1);
     }
 
 END:

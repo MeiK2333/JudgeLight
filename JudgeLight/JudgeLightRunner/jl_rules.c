@@ -5,8 +5,13 @@
  * */
 int SetSyscallRules(struct RunnerConfig *rconfig) {
     // TODO
-    if (strcmp(rconfig->allow_system_calls_rule, "default") == 0 ||
-        strcmp(rconfig->allow_system_calls_rule, "c/cpp") == 0) {
+    if (rconfig->allow_system_calls_rule == NULL) {
+        /** 不提供则开放所有调用 */
+        for (int i = 0; i < 1024; i++) {
+            rconfig->system_calls[i] = 0;
+        }
+    } else if (strcmp(rconfig->allow_system_calls_rule, "default") == 0 ||
+               strcmp(rconfig->allow_system_calls_rule, "c/cpp") == 0) {
     }
     return 0;
 }

@@ -23,8 +23,10 @@ struct RunnerConfig {
     int gid;
 
     char *allow_system_calls_rule;
-    char system_calls[1024]; // TODO: 为每个系统调用号设置，0：允许， 1：禁止。
+    char system_calls[1024];
 };
+
+#define UNLIMITED -1
 
 /**
  * 程序运行后的结果与资源占用

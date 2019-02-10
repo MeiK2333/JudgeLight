@@ -75,19 +75,18 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
                     break;
                 }
 
-                /** 复制跟踪器信息 */
-                if (ptrace(PTRACE_GETREGS, pid, NULL, &regs) == -1) {
-                    ERROR("PTRACE_GETREGS failure!");
-                }
-
                 /** 非内核产生的调停，代表进程因自身异常停止运行 */
                 if (WSTOPSIG(status) != SIGTRAP) {
                     /** 结束 ptrace，waitpid 移除僵尸进程 */
                     ptrace(PTRACE_KILL, pid, NULL, NULL);
                     waitpid(pid, NULL, 0);
                     rstats->re_flag = 1;
-                    rstats->re_syscall = REG_SYS_CALL(&regs);
                     goto JUDGE_END;
+                }
+
+                /** 复制跟踪器信息 */
+                if (ptrace(PTRACE_GETREGS, pid, NULL, &regs) == -1) {
+                    ERROR("PTRACE_GETREGS failure!");
                 }
 
                 if (incall) {

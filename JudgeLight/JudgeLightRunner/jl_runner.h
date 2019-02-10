@@ -36,7 +36,7 @@ struct RunnerStats {
     int real_time_used;
     int memory_used;
     int signum;
-    char *message;
+    int re_syscall;
 };
 
 int RunIt(struct RunnerConfig *, struct RunnerStats *);

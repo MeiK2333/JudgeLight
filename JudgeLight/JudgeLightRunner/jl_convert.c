@@ -184,6 +184,49 @@ END:
  * 用 C 结构体生成 Python Object
  * */
 int GenPythonObject(struct RunnerStats *rstats, PyObject *stats) {
-    // TODO
-    return 0;
+    PyObject *py_obj;
+    int res = 0;
+
+    if ((py_obj = PyLong_FromLong(rstats->time_used)) == NULL) {
+        ERROR("PyLong_FromLong [time_used] failure!");
+    } else {
+        if (PyDict_SetItemString(stats, "time_used", py_obj) != 0) {
+            ERROR("PyDict_SetItemString [time_used] failure!");
+        }
+    }
+
+    if ((py_obj = PyLong_FromLong(rstats->real_time_used)) == NULL) {
+        ERROR("PyLong_FromLong [real_time_used] failure!");
+    } else {
+        if (PyDict_SetItemString(stats, "real_time_used", py_obj) != 0) {
+            ERROR("PyDict_SetItemString [real_time_used] failure!");
+        }
+    }
+
+    if ((py_obj = PyLong_FromLong(rstats->memory_used)) == NULL) {
+        ERROR("PyLong_FromLong [memory_used] failure!");
+    } else {
+        if (PyDict_SetItemString(stats, "memory_used", py_obj) != 0) {
+            ERROR("PyDict_SetItemString [memory_used] failure!");
+        }
+    }
+
+    if ((py_obj = PyLong_FromLong(rstats->signum)) == NULL) {
+        ERROR("PyLong_FromLong [signum] failure!");
+    } else {
+        if (PyDict_SetItemString(stats, "signum", py_obj) != 0) {
+            ERROR("PyDict_SetItemString [signum] failure!");
+        }
+    }
+
+    if ((py_obj = PyLong_FromLong(rstats->re_syscall)) == NULL) {
+        ERROR("PyLong_FromLong [re_syscall] failure!");
+    } else {
+        if (PyDict_SetItemString(stats, "re_syscall", py_obj) != 0) {
+            ERROR("PyDict_SetItemString [re_syscall] failure!");
+        }
+    }
+
+END:
+    return res;
 }

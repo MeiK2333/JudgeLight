@@ -4,6 +4,7 @@
 
 #include <Python.h>
 #include <sys/ptrace.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -20,6 +21,9 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
 
     int res = 0;
     pid_t pid;
+    struct timeval start, end;
+
+    gettimeofday(&start, NULL);
 
     if ((pid = fork()) < 0) {
         ERROR("fork failure!");
@@ -48,6 +52,11 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
 
         /** TODO: 监控子进程系统调用，读取内存与时间占用，处理运行中的异常 */
         sleep(1);
+
+        gettimeofday(&end, NULL);
+        rstats->real_time_used =
+            (int)(end.tv_sec * 1000 + end.tv_usec / 1000 - start.tv_sec * 1000 -
+                  start.tv_usec / 1000);
     }
 
 END:

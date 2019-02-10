@@ -36,6 +36,7 @@ struct RunnerStats {
     int real_time_used;
     int memory_used;
     int signum;
+    int re_flag;
     int re_syscall;
 };
 

@@ -43,6 +43,12 @@ END:
 #ifdef DEBUG
     printf("errno: %d\n", errno);
 #endif
+    if (rconfig.exec_args != NULL) {
+        free(rconfig.exec_args);
+    }
+    if (rconfig.envs != NULL) {
+        free(rconfig.envs);
+    }
 
     return stats;
 }

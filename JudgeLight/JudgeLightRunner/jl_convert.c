@@ -14,7 +14,6 @@
  * 解析 Python 参数为 C 结构体
  * */
 int ParsePythonArgs(PyObject *args, struct RunnerConfig *rconfig) {
-    // TODO
     int res = 0;
     PyObject *pconfig, *py_obj, *py_bytes, *py_item;
 
@@ -216,6 +215,14 @@ int GenPythonObject(struct RunnerStats *rstats, PyObject *stats) {
     } else {
         if (PyDict_SetItemString(stats, "signum", py_obj) != 0) {
             ERROR("PyDict_SetItemString [signum] failure!");
+        }
+    }
+
+    if ((py_obj = PyLong_FromLong(rstats->re_flag)) == NULL) {
+        ERROR("PyLong_FromLong [re_flag] failure!");
+    } else {
+        if (PyDict_SetItemString(stats, "re_flag", py_obj) != 0) {
+            ERROR("PyDict_SetItemString [re_flag] failure!");
         }
     }
 

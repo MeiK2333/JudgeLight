@@ -63,7 +63,9 @@ int SetSyscallRules(struct RunnerConfig *rconfig) {
                                    SYS_readlink,
                                    SYS_mprotect,
                                    SYS_getdents,
+                                   #ifdef SYS_getrandom
                                    SYS_getrandom,
+                                   #endif
                                    SYS_prlimit64,
                                    SYS_arch_prctl,
                                    SYS_exit_group,

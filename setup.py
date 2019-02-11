@@ -2,7 +2,7 @@ from distutils.core import setup, Extension
 
 setup(
     name='JudgeLight',
-    version='2.0.0',
+    version='2.0.1',
     ext_modules=[Extension('JudgeLight/JudgeLightRunner', sources=[
         'JudgeLight/JudgeLightRunner/judgelightrunner.c',
         'JudgeLight/JudgeLightRunner/jl_runner.c',

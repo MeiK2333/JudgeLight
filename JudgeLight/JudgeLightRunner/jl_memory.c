@@ -1,7 +1,9 @@
 #include "jl_memory.h"
 
 #include <Python.h>
+#ifndef __APPLE__
 #include <linux/limits.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

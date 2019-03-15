@@ -1,7 +1,9 @@
 #include "jl_runner.h"
 #include "jl_limit.h"
 #include "jl_memory.h"
+#ifndef __APPLE__
 #include "jl_rules.h"
+#endif
 
 #include <Python.h>
 #include <fcntl.h>
@@ -46,10 +48,12 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
             ERROR("SetStream failure!");
         }
 
+#ifndef __APPLE__
         /** 开启 ptrace 监控系统调用，在每次调用暂停时读取内存与时间占用 */
         if (rconfig->trace && ptrace(PTRACE_TRACEME, 0, NULL, NULL) != 0) {
             ERROR("ptrace_TRACEME failure!");
         }
+#endif
 
         /** 开始执行待评测程序 */
         execve(rconfig->exec_file_path, rconfig->exec_args, rconfig->envs);
@@ -63,9 +67,12 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
         rstats->re_flag = 0;
         int status, incall = 0;
         struct rusage ru;
+#ifndef __APPLE__
         struct user_regs_struct regs;
+#endif
         struct MemoryStatus ms;
 
+#ifndef __APPLE__
         if (rconfig->trace) {
             /** ptrace 监控子进程的系统调用 */
             while (1) {
@@ -133,6 +140,7 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
                 ptrace(PTRACE_SYSCALL, pid, NULL, NULL);
             }
         } else {
+#endif
             /** 不使用 ptrace */
             if (wait4(pid, &status, 0, &ru) == -1) {
                 ERROR("wait4 failure");
@@ -141,7 +149,9 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
                 rstats->re_flag = 1;
             }
             rstats->memory_used = ru.ru_maxrss;
+#ifndef __APPLE__
         }
+#endif
 
     JUDGE_END:
         /** 读取 CPU 时间 */

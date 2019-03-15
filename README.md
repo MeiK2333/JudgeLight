@@ -6,18 +6,26 @@
 - Python3.6+
 - gcc5+
 
+## 平台可用性
+
+- Ubuntu 16 及以上：完全支持。
+- Ubuntu 14 及以下：有限的支持，系统调用限制部分失效，将导致部分语言无法限制系统调用。
+- 其他 Linux 发行版：理论支持。
+- macOS：基础功能支持，内存限制、运行时异常捕获、系统调用限制将完全失效，且无法获取准确的资源占用。
+- Windows：完全不支持。
+
 ## 安装
 
 从 pipy：
 
 ```bash
-$ pip install JudgeLight
+$ pip install -U JudgeLight
 ```
 
 从 GitHub：
 
 ```bash
-$ pip install git+https://github.com/MeiK-h/JudgeLight.git
+$ pip install -U git+https://github.com/MeiK-h/JudgeLight.git
 ```
 
 ## 测试

@@ -1,5 +1,7 @@
 #include "jl_convert.h"
+#ifndef __APPLE__
 #include "jl_rules.h"
+#endif
 
 #include <stdlib.h>
 
@@ -175,8 +177,10 @@ int ParsePythonArgs(PyObject *args, struct RunnerConfig *rconfig) {
         }
     }
 
+#ifndef __APPLE__
     /** 添加已有的系统调用白名单 */
     SetSyscallRules(rconfig);
+#endif
 
 END:
     if (res != 0) {

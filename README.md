@@ -22,16 +22,23 @@ Python 代码中使用了 `f-string`，因此**仅**支持 Python 3.6 及以上�
 
 ## 安装
 
-从 pipy：
+### 从 pypi:
 
 ```bash
 $ pip install -U JudgeLight
 ```
 
-从 GitHub：
+### 从 GitHub:
 
 ```bash
 $ pip install -U git+https://github.com/MeiK-h/JudgeLight.git
+```
+
+### 源码安装:
+
+```bash
+$ git clone https://github.com/MeiK-h/JudgeLight.git
+$ cd JudgeLight && python3 setup.py install
 ```
 
 ## 测试

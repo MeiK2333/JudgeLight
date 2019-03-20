@@ -45,7 +45,7 @@ $ cd tests && python test_limit.py
 ### 系统调用限制
 
 ```bash
-$ cd tests && python syscall.py
+$ cd tests && python test_syscall.py
 ```
 
 ## 使用方法

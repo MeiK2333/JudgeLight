@@ -70,21 +70,6 @@ int main() {
 
         clear_it()
 
-    def test_python(self):
-        # pass
-        code = 'print("Hello World!")'
-        with open('code.py', 'w') as fw:
-            fw.write(code)
-        jl = JudgeLight('/usr/bin/python3', exec_args=[
-                        '/usr/bin/python3', 'code.py'], allow_system_calls_rule='python', output_file_path='output.txt')
-        stats = jl.run()
-
-        self.assertEqual(stats['re_flag'], 0)
-        with open('output.txt') as fr:
-            self.assertEqual(fr.read().strip(), 'Hello World!')
-        os.remove('code.py')
-        os.remove('output.txt')
-
     def test_exec(self):
         # nopass
         code = '''

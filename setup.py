@@ -7,9 +7,8 @@ sources = [
     'JudgeLight/JudgeLightRunner/jl_memory.c',
     'JudgeLight/JudgeLightRunner/jl_limit.c',
     'JudgeLight/JudgeLightRunner/jl_convert.c',
+    'JudgeLight/JudgeLightRunner/jl_rules.c',
 ]
-if sys.platform.lower() != 'darwin':
-    sources.append('JudgeLight/JudgeLightRunner/jl_rules.c')
 
 setup(
     name='JudgeLight',

@@ -12,13 +12,7 @@
 
 Python 代码中使用了 `f-string`，因此**仅**支持 Python 3.6 及以上版本。
 
-对所有系统的支持如下：
-
-- Ubuntu 16 及以上：完全支持。
-- Ubuntu 14 及以下：有限的支持，系统调用限制部分失效，将导致部分语言无法限制系统调用。
-- 其他 Linux 发行版：理论支持。
-- macOS：基础功能支持，内存限制、运行时异常捕获、系统调用限制将完全失效，且无法获取准确的资源占用。
-- Windows：完全不支持。
+仅支持 16.04 及更高版本的 Ubuntu 系统。
 
 ## 安装
 
@@ -31,13 +25,13 @@ $ pip install -U JudgeLight
 ### 从 GitHub:
 
 ```bash
-$ pip install -U git+https://github.com/MeiK-h/JudgeLight.git
+$ pip install -U git+https://github.com/MeiK2333/JudgeLight.git
 ```
 
 ### 源码安装:
 
 ```bash
-$ git clone https://github.com/MeiK-h/JudgeLight.git
+$ git clone https://github.com/MeiK2333/JudgeLight.git
 $ cd JudgeLight && python3 setup.py install
 ```
 

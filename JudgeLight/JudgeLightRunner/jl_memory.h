@@ -16,8 +16,8 @@ struct MemoryStatus {
     int vm_lib;
 };
 
-int GetMemoryUsage(pid_t, struct MemoryStatus *);
-
 int MemoryUsage(int, struct MemoryStatus *);
+
+int GetNumByVmLine(char *);
 
 #endif

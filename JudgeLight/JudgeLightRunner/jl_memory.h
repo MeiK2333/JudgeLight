@@ -18,4 +18,6 @@ struct MemoryStatus {
 
 int GetMemoryUsage(pid_t, struct MemoryStatus *);
 
+int MemoryUsage(int, struct MemoryStatus *);
+
 #endif

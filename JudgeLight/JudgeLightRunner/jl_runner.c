@@ -129,7 +129,7 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
                 }
 
                 /** 读取内存 */
-                if (GetMemoryUsage(pid, &ms) != 0) {
+                if (MemoryUsage(pid, &ms) != 0) {
                     ERROR("GetMemoryUsage failure!");
                 }
                 rstats->memory_used = rstats->memory_used > ms.vm_rss

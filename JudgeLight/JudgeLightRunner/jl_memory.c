@@ -56,6 +56,6 @@ END:
 
 int MemoryUsage(int fd, struct MemoryStatus * ms) {
     int res = 0;
-    &ms->vm_rss = 0;
+    ms->vm_rss = 0;
     return res;
 }

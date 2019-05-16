@@ -69,6 +69,15 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
         struct rusage ru;
 #ifndef __APPLE__
         struct user_regs_struct regs;
+        /** 打开文件描述符，以供后续读取文件内容 */
+        FILE *fr;
+        char status_file[PATH_MAX];
+        sprintf(status_file, "/proc/%d/status", pid);
+        if ((fr = fopen(status_file, "r")) == NULL) {
+            ERROR("fopen failure!");
+        }
+
+        
 #endif
         struct MemoryStatus ms;
 
@@ -129,7 +138,7 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
                 }
 
                 /** 读取内存 */
-                if (MemoryUsage(pid, &ms) != 0) {
+                if (MemoryUsage(fileno(fr), &ms) != 0) {
                     ERROR("GetMemoryUsage failure!");
                 }
                 rstats->memory_used = rstats->memory_used > ms.vm_rss
@@ -154,6 +163,10 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
 #endif
 
     JUDGE_END:
+
+#ifndef __APPLE__
+        fclose(fr);
+#endif
         /** 读取 CPU 时间 */
         rstats->time_used =
             ru.ru_utime.tv_sec * 1000 + ru.ru_utime.tv_usec / 1000 +

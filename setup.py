@@ -12,7 +12,7 @@ sources = [
 
 setup(
     name='JudgeLight',
-    version='2.0.6',
+    version='2.0.7',
     ext_modules=[Extension('JudgeLight/JudgeLightRunner', sources=sources)],
     packages=['JudgeLight'],
     license='MIT',

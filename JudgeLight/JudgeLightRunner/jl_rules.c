@@ -28,6 +28,7 @@ int SetSyscallRules(struct RunnerConfig *rconfig) {
                                    SYS_read,
                                    SYS_mmap,
                                    SYS_stat,
+                                   SYS_clone,  // Java
                                    SYS_write,
                                    SYS_lseek,
                                    SYS_lstat,

@@ -103,26 +103,11 @@ int RunIt(struct RunnerConfig *rconfig, struct RunnerStats *rstats) {
                 if (incall) {
                     /** 检查系统调用是否被允许 */
                     if (CheckSyscallRule(rconfig, &regs) != 0) {
-                        /**
-                         * 如果 open 和 openat 被禁止，则对于 open 和 openat
-                         * 单独处理，不允许创建或写入文件
-                         * */
-                        if (((REG_SYS_CALL(&regs) == SYS_openat) &&
-                             ((SYS_CALL_ARG_3(&regs) &
-                               (O_CREAT | O_WRONLY | O_RDWR | O_APPEND)) ==
-                              0)) ||
-                            ((REG_SYS_CALL(&regs) == SYS_open) &&
-                             ((SYS_CALL_ARG_2(&regs) &
-                               (O_CREAT | O_WRONLY | O_RDWR | O_APPEND)) ==
-                              0))) {
-                            /** 如果是仅读取的话则允许执行 */
-                        } else {
-                            ptrace(PTRACE_KILL, pid, NULL, NULL);
-                            waitpid(pid, NULL, 0);
-                            rstats->re_flag = 1;
-                            rstats->re_syscall = REG_SYS_CALL(&regs);
-                            goto JUDGE_END;
-                        }
+                        ptrace(PTRACE_KILL, pid, NULL, NULL);
+                        waitpid(pid, NULL, 0);
+                        rstats->re_flag = 1;
+                        rstats->re_syscall = REG_SYS_CALL(&regs);
+                        goto JUDGE_END;
                     }
                     incall = 0;
                 } else {

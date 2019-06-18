@@ -163,7 +163,7 @@ int main(){
         compile_it(code)
 
         jl = JudgeLight('./a.out', output_file_path='output.txt',
-                        memory_limit=65535, trace=False)
+                        memory_limit=4096, trace=False)
         stats = jl.run()
 
         self.assertEqual(stats['re_flag'], 1)

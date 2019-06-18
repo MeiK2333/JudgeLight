@@ -67,6 +67,53 @@ int SetSyscallRules(struct RunnerConfig *rconfig) {
         for (int i = 0; allow_syscall[i] != -1; i++) {
             rconfig->system_calls[allow_syscall[i]] = 0;
         }
+    } else if (strcmp(rconfig->allow_system_calls_rule, "java") == 0) {
+        int allow_syscall[1024] = {SYS_dup,
+                                   SYS_brk,
+                                   SYS_exit,
+                                   SYS_read,
+                                   SYS_mmap,
+                                   SYS_stat,
+                                   SYS_open,
+                                   SYS_clone,
+                                   SYS_write,
+                                   SYS_lseek,
+                                   SYS_lstat,
+                                   SYS_fcntl,
+                                   SYS_close,
+                                   SYS_fstat,
+                                   SYS_futex,
+                                   SYS_uname,
+                                   SYS_ioctl,
+                                   SYS_select,
+                                   SYS_munmap,
+                                   SYS_access,
+                                   SYS_getcwd,
+                                   SYS_getgid,
+                                   SYS_getuid,
+                                   SYS_getpid,
+                                   SYS_writev,
+                                   SYS_sysinfo,
+                                   SYS_geteuid,
+                                   SYS_getegid,
+                                   SYS_readlink,
+                                   SYS_mprotect,
+                                   SYS_getdents,
+                                   SYS_getrandom,
+                                   SYS_getrlimit,
+                                   SYS_prlimit64,
+                                   SYS_arch_prctl,
+                                   SYS_exit_group,
+                                   SYS_sigaltstack,
+                                   SYS_rt_sigaction,
+                                   SYS_clock_gettime,
+                                   SYS_rt_sigprocmask,
+                                   SYS_set_robust_list,
+                                   SYS_set_tid_address,
+                                   -1};
+        for (int i = 0; allow_syscall[i] != -1; i++) {
+            rconfig->system_calls[allow_syscall[i]] = 0;
+        }
     }
     return 0;
 }
